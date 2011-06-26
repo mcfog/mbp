@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('body').html('Loading...');
+			$('head').append($('<base />').attr('href', S['domain']).attr('target', '_blank'));
+			BG.cacheGet(S['domain']+"/ajax/timeline"+location.search,function(o) {
+				if(location.search == '?type=replies') {
+					S['reply_read'] = S['reply_count'];	
+				}
+				var $items = $(o).find('.tml_item');
+				if($items.size()==0) {
+					$('body').html('空气中空荡荡的，没有电波传来:(').width(150);
+				} else {
+					$('body').empty();
+					$items.each(function() {
+						var $item = $(this).clone();
+						$('body').append($item.find('.info'));
+					});
+				}
+				if(parent && parent.frm_w) parent.frm_w($('body').width());
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="popup.css" />
+	<style type="text/css">
+		* {
+			font-size:13px;	
+		}
+		.info {
+			display:block;
+			border-bottom:1px solid silver;
+			margin-bottom:0.5em;
+			position:relative;
+			min-height:55px;
+			line-height:1.2em;
+			padding-right:80px;
+			clear:both;
+		}
+		.info img {float:right}
+		
+		.info .date {
+			color:gray;
+			font-size:smaller;
+			position:absolute;
+			right:0;bottom:0;
+		}
+		
+		.info>div:after{clear:both;content:" ";display:block}
+
+		img.grid {
+			margin-top:-15px;
+		}
+	</style>
+</head>
+<body></body>
+</html>

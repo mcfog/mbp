@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('head').append($('<base />').attr('href', S['domain']).attr('target', '_blank'));
+			var log = JSON.parse(S['bilibili_log']);
+			for(var i in log) {
+				$('<div></div>').addClass('bili cb').html(log[i]).appendTo('body');
+			}
+		});
+	</script>
+	<link rel="stylesheet" href="popup.css" />
+	<link rel="stylesheet" href="bili.css" />
+</head>
+</html>

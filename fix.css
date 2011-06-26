@@ -1,0 +1,156 @@
+﻿/*文字阴影修复*/
+div#menu ul li a.focus:hover span, div#menu ul li a.top:hover span, #nav_menu li:hover a.top span, #nav_menu li:hover a.focus span {
+	text-shadow: #DDD 1px 1px !important;
+}
+
+/*人物介绍左侧引用来源破行*/
+ul#infobox li {word-break: break-all;}
+
+/*编辑器『颜色』按钮*/
+.markItUp .markItUpButton15 a {
+	background:url(/img/smiles/tv/95.gif) -1px -3px no-repeat;
+}
+
+.markItUpDropMenu ul {
+	position:relative;
+	z-index:3939;
+}
+
+/*讨论*/
+#post_Topic a.avatar, .row_reply a.avatar {
+	display:inline-block;
+	position:absolute;
+	top:10px;left:5px;
+}
+#post_Topic, .row_reply {
+	position:relative;
+}
+
+.cb{zoom:1;clear:both;}
+.cb:after{clear:both;content:" ";display:block}
+
+/*导航栏*/
+#idBadger a.avatar ul{display:block;top:34px;left:-75px;position:absolute;z-index:99;width:118px;-moz-opacity: .9;opacity: .9;filter:alpha(opacity=90);background-color:#FFF;padding:3px 0;border:1px solid #eee;-moz-border-radius-topleft:0;-moz-border-radius-topright:5px;-moz-border-radius-bottomleft:5px;-moz-border-radius-bottomright:5px;-webkit-border-top-left-radius:0;-webkit-border-top-right-radius:5px;-webkit-border-bottom-right-radius:5px;-webkit-border-bottom-left-radius:5px;-webkit-box-shadow:2px 2px 5px #EEE;-moz-box-shadow:0px 5px 5px -3px #AAA;background:#FFF;background: -webkit-gradient( linear, left top, left bottom, color-stop(.8, #FEFEFE), color-stop(1, #EEE) );background: -moz-linear-gradient( center top, #FEFEFE 80%, #EEE 100% );-moz-box-shadow:inset 0 1px 1px hsla(0,100%,100%,1), inset 0 -1px 0 hsla(0,100%,100%,.3), 0 5px 0 rgba(200,200,200,0.5), 0 5px 2px hsla(214,100%,0%,.2);-webkit-box-shadow:inset 0 1px 1px hsla(0,100%,100%,1), inset 0 -1px 0 hsla(0,100%,100%,.3), 0 5px 0 rgba(200,200,200,0.5), 0 5px 2px hsla(214,100%,0%,.2)}
+#idBadger a.avatar ul li a{color:#0187C5;text-align:center;padding:2px 0px}
+#idBadger a.avatar ul li a.nav {
+	display: block;
+	height: 17px;
+	width: 118px;
+}
+#idBadger a.avatar ul li a:hover{padding:2px 0px;color:#FFF;background:#FFF url('/img/bangumi/bangumi_ui_1.png') no-repeat 0 -26px}
+
+/*光头*/
+._guangtou>.loading{
+	padding:0 5px;cursor:pointer;
+	position:absolute;
+	right:0px;top:10px;
+	line-height:100%;
+	height:100%;
+}
+._guangtou>.aclone {
+	position:absolute;
+	left:5px;top:5px;
+}
+._guangtou{cursor:pointer;box-shadow: 0 0 5px #CCC;position:absolute;padding:4px;border:1px solid #02A3FB;border-radius:5px;background:rgba(255,255,255,0.6);z-index:49}
+._guangtou:hover{background:rgba(255,127,255,0.6);}
+._daguangtou{cursor:default;min-width:300px;background:rgba(255,255,255,0.8)}
+._daguangtou:hover{background:rgba(255,255,255,0.9);}
+
+.sub_reply_bg {
+	position:relative;
+}
+
+/*覆盖层*
+body {
+	overflow:hidden;	
+}
+._overlay {
+	position:absolute;
+	left:-20000px;top:-20000px;
+	width:100000px; height:100000px;
+	z-index:65535;
+	background:white;
+	opacity:0.9;
+}
+
+/*人物系统 列表超长*/
+ul.browserList>li._more {
+	line-height:30px;
+	height:30px;
+	font-size:14px;
+	cursor:pointer;
+	text-align:center;
+	margin-top:-1px;
+	border:1px dotted #EAEAEA;
+}
+ul.browserList>li._more:hover {
+	background:#EEE;	
+	border:1px solid #EAEAEA;
+}
+
+/*旧回复折叠*/
+._summary>a {
+	display:block;
+	float:left;
+	margin-right:5px;
+	height:24px;
+	line-height:24px;
+	overflow:hidden;
+	max-width:25%;
+}
+._summary>span {
+	display:block;
+	float:left;
+	color:gray;
+	height:24px;
+	line-height:24px;
+	overflow:hidden;
+	max-width:70%;
+}
+._summary>.re_info {
+	float:right;	
+}
+
+._folded {
+	display:block;
+	padding:2px 0 2px 5px !important;
+}
+
+._folded._hover {
+	background:#EEE;
+}
+
+
+/*RT Button*/
+.tml_item a.tml_rt {
+	background: rgba(64,64,64,0.3);
+	display:inline-block;
+	opacity: .2;
+	overflow: hidden;
+	cursor:pointer;
+	border:1px solid rgba(64,64,64,0.1);
+	margin-left:5px;
+	margin-bottom:-5px;
+	padding:1px 5px;
+	color:black;
+}
+.tml_item:hover a.tml_rt {
+	opacity: .9;
+	display:inline-block;
+} 
+.tml_item a.tml_rt:hover {
+	background-position: -15px -90px;
+	background-color:rgba(32,32,32,0.8);
+	border:1px solid rgba(32,32,32,0.5);
+	color:white
+}
+#header>a {
+	padding:0 10px;	
+	opacity:.5;
+}
+#ukagaka_voice:hover {
+	background:rgba(0,0,0,.05);
+	cursor:pointer;
+}
+
+/*EOF*/

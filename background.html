@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript">
+		//$.md5
+	(function(q){var k=function(b,c){var h,g,j,i,a;j=b&2147483648;i=c&2147483648;h=b&1073741824;g=c&1073741824;a=(b&1073741823)+(c&1073741823);if(h&g)return a^2147483648^j^i;return h|g?a&1073741824?a^3221225472^j^i:a^1073741824^j^i:a^j^i},l=function(b,c,h,g,j,i,a){b=k(b,k(k(c&h|~c&g,j),a));return k(b<<i|b>>>32-i,c)},m=function(b,c,h,g,j,i,a){b=k(b,k(k(c&g|h&~g,j),a));return k(b<<i|b>>>32-i,c)},n=function(b,c,h,g,j,i,a){b=k(b,k(k(c^h^g,j),a));return k(b<<i|b>>>32-i,c)},o=function(b,c,h,g,j,i,a){b=k(b,
+k(k(h^(c|~g),j),a));return k(b<<i|b>>>32-i,c)},p=function(b){var c="",h="",g;for(g=0;g<=3;g++){h=b>>>g*8&255;h="0"+h.toString(16);c+=h.substr(h.length-2,2)}return c};q.extend({md5:function(b){var c=[],h,g,j,i,a,d,e,f;c=b;c=c.replace(/\x0d\x0a/g,"\n");b="";for(h=0;h<c.length;h++){g=c.charCodeAt(h);if(g<128)b+=String.fromCharCode(g);else{if(g>127&&g<2048)b+=String.fromCharCode(g>>6|192);else{b+=String.fromCharCode(g>>12|224);b+=String.fromCharCode(g>>6&63|128)}b+=String.fromCharCode(g&63|128)}}c=b=
+b;b=c.length;h=b+8;g=((h-h%64)/64+1)*16;j=Array(g-1);for(a=i=0;a<b;){h=(a-a%4)/4;i=a%4*8;j[h]|=c.charCodeAt(a)<<i;a++}h=(a-a%4)/4;i=a%4*8;j[h]|=128<<i;j[g-2]=b<<3;j[g-1]=b>>>29;c=j;a=1732584193;d=4023233417;e=2562383102;f=271733878;for(b=0;b<c.length;b+=16){h=a;g=d;j=e;i=f;a=l(a,d,e,f,c[b+0],7,3614090360);f=l(f,a,d,e,c[b+1],12,3905402710);e=l(e,f,a,d,c[b+2],17,606105819);d=l(d,e,f,a,c[b+3],22,3250441966);a=l(a,d,e,f,c[b+4],7,4118548399);f=l(f,a,d,e,c[b+5],12,1200080426);e=l(e,f,a,d,c[b+6],17,2821735955);
+d=l(d,e,f,a,c[b+7],22,4249261313);a=l(a,d,e,f,c[b+8],7,1770035416);f=l(f,a,d,e,c[b+9],12,2336552879);e=l(e,f,a,d,c[b+10],17,4294925233);d=l(d,e,f,a,c[b+11],22,2304563134);a=l(a,d,e,f,c[b+12],7,1804603682);f=l(f,a,d,e,c[b+13],12,4254626195);e=l(e,f,a,d,c[b+14],17,2792965006);d=l(d,e,f,a,c[b+15],22,1236535329);a=m(a,d,e,f,c[b+1],5,4129170786);f=m(f,a,d,e,c[b+6],9,3225465664);e=m(e,f,a,d,c[b+11],14,643717713);d=m(d,e,f,a,c[b+0],20,3921069994);a=m(a,d,e,f,c[b+5],5,3593408605);f=m(f,a,d,e,c[b+10],9,38016083);
+e=m(e,f,a,d,c[b+15],14,3634488961);d=m(d,e,f,a,c[b+4],20,3889429448);a=m(a,d,e,f,c[b+9],5,568446438);f=m(f,a,d,e,c[b+14],9,3275163606);e=m(e,f,a,d,c[b+3],14,4107603335);d=m(d,e,f,a,c[b+8],20,1163531501);a=m(a,d,e,f,c[b+13],5,2850285829);f=m(f,a,d,e,c[b+2],9,4243563512);e=m(e,f,a,d,c[b+7],14,1735328473);d=m(d,e,f,a,c[b+12],20,2368359562);a=n(a,d,e,f,c[b+5],4,4294588738);f=n(f,a,d,e,c[b+8],11,2272392833);e=n(e,f,a,d,c[b+11],16,1839030562);d=n(d,e,f,a,c[b+14],23,4259657740);a=n(a,d,e,f,c[b+1],4,2763975236);
+f=n(f,a,d,e,c[b+4],11,1272893353);e=n(e,f,a,d,c[b+7],16,4139469664);d=n(d,e,f,a,c[b+10],23,3200236656);a=n(a,d,e,f,c[b+13],4,681279174);f=n(f,a,d,e,c[b+0],11,3936430074);e=n(e,f,a,d,c[b+3],16,3572445317);d=n(d,e,f,a,c[b+6],23,76029189);a=n(a,d,e,f,c[b+9],4,3654602809);f=n(f,a,d,e,c[b+12],11,3873151461);e=n(e,f,a,d,c[b+15],16,530742520);d=n(d,e,f,a,c[b+2],23,3299628645);a=o(a,d,e,f,c[b+0],6,4096336452);f=o(f,a,d,e,c[b+7],10,1126891415);e=o(e,f,a,d,c[b+14],15,2878612391);d=o(d,e,f,a,c[b+5],21,4237533241);
+a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,c[b+10],15,4293915773);d=o(d,e,f,a,c[b+1],21,2240044497);a=o(a,d,e,f,c[b+8],6,1873313359);f=o(f,a,d,e,c[b+15],10,4264355552);e=o(e,f,a,d,c[b+6],15,2734768916);d=o(d,e,f,a,c[b+13],21,1309151649);a=o(a,d,e,f,c[b+4],6,4149444226);f=o(f,a,d,e,c[b+11],10,3174756917);e=o(e,f,a,d,c[b+2],15,718787259);d=o(d,e,f,a,c[b+9],21,3951481745);a=k(a,h);d=k(d,g);e=k(e,j);f=k(f,i)}return(p(a)+p(d)+p(e)+p(f)).toLowerCase()}})})(jQuery);
+
+
+(function($){
+	$.fn.serializeJSON=function() {
+		var json = {};
+		jQuery.map($(this).serializeArray(), function(n, i) {
+			json[n['name']] = n['value'];
+		});
+		return json;
+	};
+})(jQuery);
+
+
+
+		var bgm = {};
+		bgm.checkVer = function(fn, cb) {
+			var r = function(xhr) {
+				var o = JSON.tryParse(xhr.responseText);
+				var oldV = Number(S.verno)||0;
+				var newV = Number(o.verno)||0;
+				if(!S.verno || oldV < newV) fn(oldV, newV);
+				if(cb) cb();
+			}
+			$.ajax({
+				url:chrome.extension.getURL('manifest.json'),
+				error:r,//because extension wont return HTTP status 200, so jQuery thought there's an error...
+				success:r,
+			});
+		}
+		
+		bgm.util = {
+			badge: function(t, c) {
+				var colors = {
+					red:[255,0,0,255],
+					green:[0,255,0,255],
+					blue:[0,0,255,255],
+					yellow:[235,235,0,255],
+					orange:[255,128,0,255],
+				};
+				var parseColor =function(c, a) {
+					var r = [];
+					for(var i=1;i<7;i+=2) {
+						var k = c.substr(i,2);
+						r.push(parseInt('0x'+k));
+					}
+					r.push(a||255);
+					return r;
+				}
+				if(!(c instanceof Array)) c = colors[c] || parseColor(c);
+				if(c) chrome.browserAction.setBadgeBackgroundColor({color:c});
+				if(!c) c = arguments.callee.last[1];
+				chrome.browserAction.setBadgeText({text:t})
+				arguments.callee.last = [t,c];
+			},
+			deskPop: function(htm) {
+				arguments.callee.htm = htm;
+				
+				var logg = S.bilibili_log ? JSON.tryParse(S.bilibili_log) : false;
+				if(!logg) logg = [];
+				logg.unshift(htm);
+				while(logg.length > 12) logg.pop();
+				S.bilibili_log = JSON.stringify(logg);
+				
+				BG.log('桌面提醒：<div class="bili">'+htm+"</div>");
+
+				webkitNotifications.createHTMLNotification(U('bilibili.html')).show();
+			}
+		}
+		bgm.util.badge.get = function() {
+			return util.badge.last;	
+		}
+		
+		bgm.tick = function(t) {
+			var me = arguments.callee;
+			var now = (new Date).getTime();
+			var last = parseInt(me.last);
+			t = parseInt(t);
+			me.last = now;
+			if(!last) {
+				clearTimeout(me.to);
+				me.to = setTimeout(me, 3000);
+			} else {
+				if(!t) t = now - last;
+				if(t<1000) {
+					console.trace();
+					return;
+				}
+				clearTimeout(me.to);
+				me.to = setTimeout(me, me.nt(t));
+			}
+
+			$(window).trigger('ev_tick');
+		}
+		
+		bgm.tick.nt = function(t) {
+			t = parseInt(t);
+			if(!t) return 3000;
+			if(t > 120000) return 120000;
+			if(t > 60000) return t*1.03;
+			if(t > 30000) return t*1.1;
+			if(t > 10000) return t*1.3;
+			return t + 3000;
+		}
+		
+		bgm.tick.reset = function(t) {
+			tick.last = t ? Date.now() : null;
+			clearTimeout(tick.to);
+			tick.to = setTimeout(tick, Math.max(t, 3000));
+		}
+		
+				
+		bgm.log = (function() {
+			var $$ = function(msg, lv) {
+				if(!lv) lv=$$.INFO;
+				if(!$$.data) $$.data=[];
+				var time = (new Date()).toTimeString().split(" ")[0];
+				$$.data.unshift([msg, time, lv]);
+				if($$.data.length > 20) $$.data.pop();
+			};
+			$.extend($$, {
+				INFO:0,
+				DEBUG:1,
+				WARNING:2,
+				ERROR:3,
+				get:function() {
+					return $$.data;
+				}
+			});
+				
+			return $$;
+		})();
+
+		
+		bgm.tsukkomi = function() {
+			var word = prompt('超过123个字什么的最讨厌了');
+			if(!word) return;
+			var a = util.badge.get();
+			util.badge(">_<", "yellow");
+			$.post(S.domain+'/update/user/say', {say_input:word}, function(r) {
+				if($(r).find('a[href*=/logout/]').size() > 0) {
+					util.deskPop("您的吐槽B娘已收到");
+				} else {
+					util.deskPop("唔……您的吐槽没有被接受（请检查您是否用<b>扩展中设定的域名</b>登录了Bangumi）");
+				}
+				util.badge(a[0], a[1]);
+			});		
+		}
+		
+		bgm.changeNick = function() {
+			var host = S.domain;
+			var a = util.badge.get();
+			util.badge(">_<", "yellow");
+			$.get(host+'/settings', function(html) {
+				util.badge("=w=", "orange");
+				var $f = $(html).find('form[name=set]');
+				var setting = $f.serializeJSON();
+				var new_nick = prompt('您的新昵称', setting.nickname);
+				if(!new_nick) return util.badge(a[0], a[1]);
+				setting.nickname = new_nick;
+				util.badge(">_<", "yellow");
+				$.post(host+'/settings', setting, function(r) {					
+					if($(r).find('a[href*=/logout/]').size() > 0) {
+						util.deskPop("您的新昵称B娘已经认真地记住了");
+					} else {
+						util.deskPop("唔……您的新昵称没有被接受（请检查您是否用<b>扩展中设定的域名</b>登录了Bangumi）");
+					}
+					util.badge(a[0], a[1]);
+				});
+			}, 'html');
+		}
+		
+		bgm.changeSign = function() {
+			var sign = prompt('您的签名？');
+			if(!sign) return;
+			var a = util.badge.get();
+			util.badge(">_<", "yellow");
+			$.post(S.domain+'/update/user/sign?ajax=1', {sign_input:sign}, function(o) {
+				BG.console.log(o);
+				if(o.status=='ok') {
+					util.deskPop("您的新签名B娘已收到");
+				} else {
+					util.deskPop("唔……您的新签名没有被接受（请检查您是否用<b>扩展中设定的域名</b>登录了Bangumi）");
+				}
+				util.badge(a[0], a[1]);
+			}, 'json');		
+			
+		}
+		
+		bgm.navdrag = {};
+		bgm.navdrag.data = {
+			origin: '[[{"text":"动画","href":"/anime"},{"text":"排行榜","href":"/anime/chart"},{"text":"每日放送","href":"/calendar"},{"text":"动画标签","href":"/anime/tag"},{"text":"分类浏览","href":"/anime/browser"},{"text":"动画日志","href":"/anime/blog"},{"text":"我看","href":"###"},{"text":"在看","href":"/anime/list/%USERID%/do"},{"text":"想看","href":"/anime/list/%USERID%/wish"},{"text":"看过","href":"/anime/list/%USERID%/collect"},{"text":"搁置","href":"/anime/list/%USERID%/on_hold"},{"text":"抛弃","href":"/anime/list/%USERID%/dropped"}],[{"text":"书籍","href":"/book"},{"text":"排行榜","href":"/book/chart"},{"text":"图书标签","href":"/book/tag"},{"text":"分类浏览","href":"/book/browser"},{"text":"图书日志","href":"/book/blog"},{"text":"我读","href":"###"},{"text":"在读","href":"/book/list/%USERID%/do"},{"text":"想读","href":"/book/list/%USERID%/wish"},{"text":"读过","href":"/book/list/%USERID%/collect"},{"text":"搁置","href":"/book/list/%USERID%/on_hold"},{"text":"抛弃","href":"/book/list/%USERID%/dropped"}],[{"text":"音乐","href":"/music"},{"text":"排行榜","href":"/music/chart"},{"text":"音乐标签","href":"/music/tag"},{"text":"浏览全部","href":"/music/browser"},{"text":"音乐日志","href":"/music/blog"},{"text":"我听","href":"###"},{"text":"在听","href":"/music/list/%USERID%/do"},{"text":"想听","href":"/music/list/%USERID%/wish"},{"text":"听过","href":"/music/list/%USERID%/collect"},{"text":"搁置","href":"/music/list/%USERID%/on_hold"},{"text":"抛弃","href":"/music/list/%USERID%/dropped"}],[{"text":"游戏","href":"/game"},{"text":"排行榜","href":"/game/chart"},{"text":"游戏标签","href":"/game/tag"},{"text":"平台浏览","href":"/game/browser"},{"text":"游戏日志","href":"/game/blog"},{"text":"我玩","href":"###"},{"text":"在玩","href":"/game/list/%USERID%/do"},{"text":"想玩","href":"/game/list/%USERID%/wish"},{"text":"玩过","href":"/game/list/%USERID%/collect"},{"text":"搁置","href":"/game/list/%USERID%/on_hold"},{"text":"抛弃","href":"/game/list/%USERID%/dropped"}],[{"text":"三次元","href":"/real"},{"text":"排行榜","href":"/real/chart"},{"text":"三次元标签","href":"/real/tag"},{"text":"三次元日志","href":"/real/blog"},{"text":"日剧","href":"/real/browser/platform/jp"},{"text":"欧美剧","href":"/real/browser/platform/en"},{"text":"我看","href":"###"},{"text":"在看","href":"/real/list/%USERID%/do"},{"text":"想看","href":"/real/list/%USERID%/wish"},{"text":"看过","href":"/real/list/%USERID%/collect"},{"text":"搁置","href":"/real/list/%USERID%/on_hold"},{"text":"抛弃","href":"/real/list/%USERID%/dropped"}],[{"text":"人物","href":"/mono"},{"text":"虚构人物","href":"/character"},{"text":"现实人物","href":"/person"}],[{"text":"超展开","href":"/rakuen"}],[{"text":"小组","href":"/group"},{"text":"随便看看","href":"/group/discover"},{"text":"所有小组","href":"/group/all"},{"text":"我","href":"###"},{"text":"发表的话题","href":"/group/my_topic"},{"text":"回复的话题","href":"/group/my_reply"},{"text":"参加的小组","href":"/group/mine"}],[{"text":"时空管理局","href":"/timeline"},{"text":"日志","href":"/timeline?type=blog"},{"text":"收藏","href":"/timeline?type=subject"},{"text":"吐槽","href":"/timeline?type=say"},{"text":"回复","href":"/timeline?type=replies"}]]',
+			originPop: '[[{"text":"<strong>时</strong>间线","href":"timeline.html"},{"text":"日志","href":"timeline.html?type=blog"},{"text":"收藏","href":"timeline.html?type=subject"},{"text":"进度","href":"timeline.html?type=progress"},{"text":"好友","href":"timeline.html?type=relation"},{"text":"小组","href":"timeline.html?type=group"},{"text":"吐槽","href":"timeline.html?type=say"},{"text":"维基","href":"timeline.html?type=wiki"},{"text":"目录","href":"timeline.html?type=index"}],[{"text":"<strong>快</strong>速","href":""},{"text":"吐槽","href":"javascript:BG.tsukkomi();"},{"text":"改昵称","href":"javascript:BG.changeNick();"},{"text":"改签名","href":"javascript:BG.changeSign();"}],[{"text":"<strong>回</strong>复","href":"timeline.html?type=replies"}],[{"text":"电<strong>波</strong>","href":"/notify.html"}],[{"text":"超<strong>展</strong>开","href":"rakuen.html"}],[{"text":"<strong>M</strong>","href":"/m.html"},{"text":"历史","href":"/bilihistory.html"}],[{"text":"<strong>首</strong>页","href":"http://bangumi.tv/"},{"text":"超展开","href":"http://bangumi.tv/rakuen"},{"text":"Dollars","href":"http://bangumi.tv/dollars"}],[{"text":"<strong>设</strong>置","href":"options.html"},{"text":"调教导航","href":"chrome-extension://jgndofnpoajhigelckkhljijlmmalkgl/navdrag.html"}]]',
+		};
+		bgm.navdrag.slot = {
+			read:function(slot) {
+				var sav = {};
+				if(S.navbar_slot) sav = JSON.tryParse(S.navbar_slot);
+				if(arguments.length == 0) return sav;
+				return sav[slot];
+			},
+			write:function(slot, nav) {
+				var sav = this.read();
+				sav[slot] = nav;
+				S.navbar_slot = JSON.stringify(sav);
+			}
+		}
+		
+		bgm.ukagaka = {
+			data: {
+				QB: {
+					bg:'http://i.imgur.com/rsfrG.png',
+					bpy:'50px',
+					height:'250px',
+					width:'600px'
+				}
+			}
+		};
+		
+		
+		bgm.cacheGet = (function() {
+			var me = {};
+			var $$ = function(url, callback, options) {
+				options = $.extend({
+					force:false,
+					expire:45
+				}, options);
+				//var me = arguments.callee;
+				if(!me.cache) me.cache = {};
+				if(!me.cacheTO) me.cacheTO = {};
+				if(!options.force && me.cache[url]) {
+					if(callback)callback.apply(this, me.cache[url]);
+					for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, me.cache[url]);
+					return;
+				}
+				$.get(url, function(h) {
+					me.cache[url] = arguments;
+					clearTimeout(me.cacheTO[url]);
+					me.cacheTO[url] = setTimeout(function() {
+						me.cache[url] = false;
+					}, Math.max(options.expire, 10) * 1000);
+	
+					if(callback)callback.apply(this, arguments);
+					for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, arguments);
+				}, 'html');
+			};
+			$$.reset = function(url) {
+				me.cache[url] = false;
+			}
+			$$.listeners = {}
+			$$.listen = function(url, cb) {
+				if(!$$.listeners[url])$$.listeners[url]=[];
+				$$.listeners[url].push(cb);
+			}
+			$$.shout = function(url, h) {
+				for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, [h])
+			}
+			
+			return $$;
+		})();
+		/********************************************************
+		 *bgm end
+		 ********************************************************/
+		$.extend(window, bgm);
+		
+		$(function() {
+			var domain = S.domain;
+			if(!domain) domain = 'http://bangumi.tv';
+			$('head').append($('<base />').attr('href', domain).attr('target', '_blank'));
+		
+			EXT.onRequest.addListener(function (request, sender, sendResponse) {
+				if(request.do == "getOptions") return sendResponse(S);
+				if(request.do == "setOptions") {
+					S[request.key] = request.value;
+					return sendResponse(1);
+				}
+				if(request.do == 'evalBG') {
+					//console.log(request.what);
+					var fn = eval('('+request.what+')');
+					return sendResponse(fn(window));
+				}
+				return sendResponse({});
+			});
+			
+			EXT.onConnect.addListener(function(CONN) {
+				if(CONN.name == 'global.inject') {
+					CONN.onMessage.addListener(function(MSG, CONN) {
+						console.info(MSG);
+						if(MSG.ac == 'bg:checkNotify') {
+							BG.cacheGet(S.domain+"/notify", function(o) {
+								var $items = $(o).find('.tml_item');
+								var flag = false;
+								$items.each(function() {
+									var $item = $(this);
+									var $link = $item.find('a.nt_link');
+									if($link.size()==0) return;
+									var match = /http:\/\/[a-z\.]+([^#]+)(#.*)$/.exec($link.attr('href'))
+									if(match[1].indexOf(MSG.pathname) != -1) {
+										var id = $item.attr('id').split('_')[1]
+										CONN.postMessage({ac:'answer:checkNotify', notify_id:id, hash:match[2]});
+										flag = true;
+										return false;
+									}
+								});
+								if(!flag) CONN.postMessage({ac:'answer:checkNotify', notify_id:false})
+							});							
+						} else if(MSG.ac == 'bg:refreshNotify') {
+							BG.cacheGet(S.domain+"/notify",false,{force:true});
+						} else if(MSG.ac == 'bg:shoutIndex') {
+							BG.cacheGet.shout(S.domain, MSG.html);
+						}
+					});
+				}//if CONN.name
+			});//func onConnect
+			
+			(function() {
+				var bn = S.badgeContent == 'notify';
+				var dn = S.biliNotify ? true : false;
+				if(!bn&&!dn) return;
+				BG.cacheGet.listen(S.domain+"/notify", function(o) {
+						var suc = function(oldC, newC) {
+							if(!newC && bn) return BG.util.badge(newC===null ? "N/A" : "0", "blue");
+							if(bn) BG.util.badge(String(newC), "blue");
+							if(dn && (!oldC || newC > oldC)) BG.util.deskPop("<a href='/notify'>您有"+newC+"条新提醒</a>");
+							if(!oldC || newC > oldC) tick.reset(6000);
+						}
+						var count = 0;
+						$(o).find('div.tml_item').each(function() {
+							var s = parseInt($(this).find('.merge_count').text());
+							if(s>0) count+=s; else count++;
+						});
+						suc(S.notify_count, count);
+						S.notify_count = count;
+				});
+				
+				$(BG).bind('ev_tick', function() {					 
+					if(bn) BG.util.badge(">_<", "yellow");
+					BG.cacheGet(S.domain+"/notify",false, {force:true})
+				});
+			})();
+
+			if(S.biliReply) (function() {
+				BG.cacheGet.listen(S.domain+'/ajax/timeline?type=replies', function(o) {
+					var $items = $(o).find('.tml_item')
+					var id = $items.first().attr('id')
+					var text = $items.first().find('.info').text()
+					if(!S.reply_last || id > S.reply_last) {
+						BG.util.deskPop("<a href='/timeline?type=replies'>您有新的吐槽回复</a><small>"+text+"</small>");
+						tick.reset(6000);
+					}
+					S.reply_last = id;
+				})
+				$(BG).bind('ev_tick', function() {
+					BG.cacheGet(S.domain+'/ajax/timeline?type=replies', false, {force:true});
+				});				
+			})();
+					
+			if(S.biliRakuen) {
+				BG.cacheGet.listen(S.domain+"/rakuen/topiclist", function(o) {
+					var $items = $(o).find('li.item_list');
+					var toph = $.md5($items.first().clone().find('.time').remove().end().html());
+					
+					if(!S.rakuen_top_hash || S.rakuen_top_hash != toph) {
+						var count = 0;
+						$items.each(function() {
+							if(S.rakuen_top_id == $(this).attr('id')) {
+								if(S.rakuen_top_hash != $.md5($(this).clone().find('.time').remove().end().html())) count++;
+								return false;
+							}
+							count++;
+						});
+						S.rakuen_top_hash = toph;
+						S.rakuen_top_id = $items.first().attr('id');
+						//var topic = $items.first().find('.inner>*:first').text();
+						//var link = $items.first().find('.inner>a[href]:first').attr('href');
+						BG.util.deskPop("<a href='/rakuen' class='title'>超展开更新(+"+count+")</a><div class='rakuen_item'>"+$items.first().html()+"</div>");
+						tick.reset(6000);
+					}
+				})
+				$(BG).bind('ev_tick', function() {
+					BG.cacheGet(S.domain+"/rakuen/topiclist", false, {force:true});
+				});
+			}//biliRakuen
+			
+			if(S.badgeContent=="progress") (function() {
+				var url = S.domain;
+				BG.cacheGet.listen(url, function(o) {
+					var count = $(o).find('.epBtnAir,.epBtnToday').size();
+					BG.util.badge(count.toString(), "#008000");
+				});
+				$(BG).bind('ev_tick', function() {
+					BG.util.badge("=w=", "orange");
+					BG.cacheGet(url, false, {force:true});
+				});				
+			})();
+			
+			
+			tick.reset(2000);
+			BG.log('启动完毕');
+		});
+	</script>
+	<script type="text/javascript" src="upgrade.js"></script>
+</head>
+<body></body>
+</html>

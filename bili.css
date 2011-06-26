@@ -1,0 +1,44 @@
+.bili {
+	max-height:100px;
+	min-height:30px;
+	padding-bottom:0.7em;
+	margin-bottom:0.3em;
+	border-bottom:1px solid silver;
+}
+
+.bili .bgm-tan {
+	position:absolute;
+	right:0;top:-15px;
+}
+.bili .msg {
+	font-size:14px;	
+}
+.bili .msg small {
+	display:block;
+	font-size:12px;
+	color:#666;
+}
+
+.bili .rakuen_item {
+	padding:3px 0 3px 10px;
+	position:relative;
+}
+.bili .rakuen_item .ll {
+	float:left;	
+}
+.bili .rakuen_item div.inner {
+	margin-left:45px;
+}
+
+.bili .rakuen_item small.time {
+	display:block;	
+}
+
+.bili a.title {
+	font-size:14px;	
+}
+/*******************************/
+body.bili {
+	width:250px;
+	overflow-x:hidden;
+}

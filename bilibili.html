@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title>test</title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var to = Math.max(parseInt(S['biliTimeout'].substr(1)), 2000);
+			window.over = setTimeout(function() {
+				window.close();
+			}, to);
+			$('body').hover(function() {
+				clearTimeout(window.over);
+			}, function() {
+				window.over = setTimeout(function() {
+					window.close();
+				}, to);				
+			});
+			
+			if(S.ukagakaShell) (function() {
+				var t = JSON.tryParse(S.ukagakaShell);
+				if(t && t.bg) $('.bili img').attr('src', t.bg);
+			})();
+			
+			$('head').append($('<base />').attr('href', S['domain']).attr('target', '_blank'));
+			$('.msg').html(BG.util.deskPop.htm).find('a').attr('target', '_blank');
+			$('a').click(function() {window.close();});
+			$('.bili img').load(function() {
+				var w = $(this).width();
+				if(w>150) $(this).css('margin-right',150-w+'px');
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="popup.css" />
+	<link rel="stylesheet" href="bili.css" />
+	<style type="text/css">
+		body {
+			height:100px;
+			overflow:hidden;
+		}
+		.msg {
+			height:100px;
+			overflow:hidden;
+			width:210px;
+			font-size:13px;
+		}
+		.msg * {
+			font-size:13px;
+			line-height:1.5em;
+		}
+	</style>
+</head>
+<body class="bili">
+	<img src="images/shell_1.gif" height="200" class="bgm-tan" />
+	<div class="msg">Loading...</div>
+</body>
+</html>

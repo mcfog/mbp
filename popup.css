@@ -1,0 +1,52 @@
+::-webkit-scrollbar{
+width:14px;
+height:14px;
+background-color:#fff;
+}
+::-webkit-scrollbar:hover{
+background-color:#eee;
+}
+::-webkit-resizer{
+-webkit-border-radius:4px;
+background-color:#666;
+}
+::-webkit-scrollbar-thumb{
+min-height:0.8em;
+min-width:0.8em;
+-webkit-border-radius:4px;
+background-color: #ddd;
+}
+::-webkit-scrollbar-thumb:hover{
+background-color: #bbb;
+}
+::-webkit-scrollbar-thumb:active{
+background-color:#888;
+}
+
+*{word-wrap:break-word;zoom:1;}
+html, body {height:100%;}
+body * {font:12px Verdana,Helvetica,Arial,sans-serif;}
+input, select, button {vertical-align:middle;}
+body, ul, li, dl, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset {
+	margin: 0;
+	padding: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-size: 1em;
+}
+li {list-style: none;}
+img {border:0;}
+
+a {
+	text-decoration:none;
+	color:#0187C5;
+}
+a:hover {
+	text-decoration:none;
+	color:#FF2293;
+}
+strong {
+	font-weight:bold;
+}
+.cb{zoom:1;clear:both;}
+.cb:after{clear:both;content:" ";display:block}

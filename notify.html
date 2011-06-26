@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('body').html('Loading...');
+			$('head').append($('<base />').attr('href', S.domain));
+			BG.cacheGet(S.domain+"/notify",function(o) {
+				var me = arguments.callee;
+				var $items = $(o).find('.tml_item');
+				if($items.size()==0) {
+					$('body').html('空气中空荡荡的，没有电波传来:(').width(400);
+				} else {
+					$('body').empty().width(500);
+					$('body').append($('<div class="tip"></div>').append($('<a href="javascript:;">全部消除</a>').click(function() {
+						var $a = $(this);
+						$a.text('正在消除...');
+						BG.$.get(S.domain+'/erase/notify/all', function() {
+							$a.text('消除成功');
+							BG.cacheGet(S.domain+"/notify", me, {force:true});
+						});
+					})));
+					$items.each(function() {
+						var $item = $(this);
+						$item.find('a.nt_link').one('click', function() {
+							var id = $(this).attr('class').split('_')[2];
+							BG.$.get('/erase/notify/'+id, {ajax:1}, function() {
+								BG.cacheGet(S.domain+"/notify", me, {force:true});
+							});
+						});
+						$item.find('a').attr('target', '_blank');
+						$item.find('.nt_del').remove();
+						$item.find('.reply_content').append(
+							$('<a title="消除" href="javascript:;">[x]</a>').one('click', function() {
+								var $a = $(this);
+								$a.text('...');
+								var id = $(this).closest('.tip').find('a.nt_link').attr('class').split('_')[2];
+								$.get('/erase/notify/'+id, {ajax:1}, function() {
+									$a.text('---');
+									BG.cacheGet(S.domain+"/notify", me, {force:true});
+								});
+							}).css('float', 'right')
+						).addClass("cb")
+						$('body').append($item);
+					});
+				}
+				if(parent && parent.frm_w) parent.frm_w($('body').width());
+			}, {expire:15});
+		});
+	</script>
+	<link rel="stylesheet" href="popup.css" />
+	<style type="text/css">
+		body>div {
+			border-bottom:1px dotted silver;
+			margin-bottom:0.5em;	
+			min-height:30px;
+		}
+		.rr {
+			float:right;	
+		}
+		.inner.tip {
+			float:left;
+			margin-left:5px;
+		}
+		a.avatar {
+			float:left;
+		}
+	</style>
+</head>
+<body>
+	
+</body>
+</html>

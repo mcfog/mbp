@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript">
+		var frm_w = function(w) {
+			var $frm = $('iframe[name=content]');
+			var $doc = $frm.contents().eq(0);
+			w = Math.max(w, 450);
+			//var pad = (550 - w - 30)/2;
+			//$frm.css({marginLeft:pad, marginRight:pad});
+			//$frm.width(w);
+			//$('body').width(w);
+		}
+		$(function() {
+			var $frm = $('iframe[name=content]');
+			
+			$(window).bind('unload', function() {
+				//BG.tick(15000);
+				S['last_iframe_src'] = $frm.contents()[0].location.href;
+			});
+			
+			var o = S.navbar_slot ? JSON.tryParse(S.navbar_slot).pop : JSON.tryParse(BG.navdrag.data.originPop);
+			if(o) {
+				$(o).each(function() {
+					var $li = $('<li>');
+					var menu = this;
+					var head = menu.shift();
+					var mkHref = function(href) {
+						return function() {return href||undefined}
+					}
+					
+					var $a = $('<a>').attr('href', mkHref(head.href)).html(head.text);
+					if(/^[\w-]+:\/\/.+/.test(head.href)) $a.attr('target', '_blank' );
+					$li.append($a.append('<strong>'));
+					if(this.length > 0) {
+						var $ul = $('<ul class="more">');
+						$li.addClass('hasmore').append($ul);
+						for(var i in menu) {
+							var item = menu[i];
+							if(item.href=='###') {
+								$ul.append($('<li>').append($('<div class="sep">').text(item.text)));
+							} else {
+								var $a = $('<a>').html(item.text).attr('href', mkHref(item.href));
+								if(/^[\w-]+:\/\/.+/.test(item.href)) $a.attr('target', '_blank' );
+								$ul.append($('<li>').append($a));
+							}
+						}
+					}
+					$('#header').append($li);
+					if(550 - $('#header').innerWidth() < 70) return false;
+				});	
+			}
+			
+			
+			var dp = S['defaultPop'];
+			if(!dp| dp=='memory') {
+				if(S['last_iframe_src']) $frm.attr('src', S['last_iframe_src']);
+				else $frm.attr('src', "service.html");
+			} else {
+				$frm.attr('src', dp);
+				$('a[href='+dp+']').closest('li').addClass('focus');
+			}
+			
+			$frm.load(function() {
+				var w = $(this).contents().find('body').width();
+				frm_w(w);
+			});
+			
+			
+			$('#header>li>a[href]').click(function(ev) {
+				if(ev.button!=0) return;
+				$('li').removeClass('focus');
+				$(this).closest('li').addClass('focus');
+			});
+			$('.more a[href]').click(function(ev) {
+				if(ev.button!=0) return;
+				$('li').removeClass('focus');
+				$(this).closest('li').addClass('focus');
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="popup.css" />
+	<style type="text/css">
+		body {
+			width:550px;
+			height:600px;
+			overflow:hidden;
+			background:url(images/Bangumi.png) no-repeat;
+		}
+
+		iframe.content {
+			width:100%;
+			height:550px;	
+			overflow-x:hidden;
+		}
+		
+		#header {
+			margin:3px 2px 1px;
+			max-width:545px;
+			height:35px;
+			width:auto;
+			float:left;
+		}
+		#header>li {
+			position:relative;
+			display:inline-block;
+			border:solid #CCC;
+			border-width:1px 1px 1px 0;
+			border-top-color:#EEE;
+			border-top-left-radius:5px;
+			border-top-right-radius:5px;
+			height:35px;
+		}
+		#header>li:first-child {
+			border-left-width:1px;
+		}		
+		#header>li>a {
+			min-width:50px;
+			text-align:center;
+			font-size:16px;	
+			display:inline-block;
+			padding:3px;
+		}
+		#header>li.hasmore>a {
+			padding-bottom:1px !important;
+			border-bottom:2px solid #FF2293;	
+		}
+
+		#header>li>a>strong {
+			font-size:24px;	
+		}
+		
+		#header>li>a {
+			padding:3px;
+			font-weight:bold;
+		}
+		#header>li.focus {
+			border-top-color:#CCC;
+			border-top-width:1px;
+			border-bottom-style:dotted;
+		}
+		#header>li.focus:last-child {
+			border-right-width:1px;	
+		}
+		#header>li.focus:first-child {
+			border-left-width:1px;	
+		}
+		
+		#header>li.focus>a>strong {
+			color:#FF2293;
+		}
+		#header>li:hover>a {
+			text-decoration:none;	
+		}
+		
+		.more {
+			display:none;
+			background:rgba(255,255,255,.85);
+			min-width:80px;
+			max-width:200px;
+			border:1px solid #CCC;
+			border-top-width:0;
+			border-bottom-left-radius:5px;
+			border-bottom-right-radius:5px;
+		}
+		#header>li:hover .more {
+			display:block;
+			position:absolute;
+			top:35px;
+			left:-1px;
+			z-index:200;
+		}
+		#header>li:hover:last-child .more {
+			right:-1px;
+			left:auto;	
+		}
+		.more li a {
+			display:inline-block;
+			padding:3px;
+			font-size:14px;
+			width:100%;
+			text-align:center;
+		}
+		.more li.focus a {
+			color:#FF2293;
+			font-weight:bold;
+		}
+		.more li:hover {
+			background:rgba(255,255,255,.9);
+		}
+		
+		iframe {
+			border-top:1px solid gray;	
+		}
+	</style>
+	<base target="content" />
+</head>
+<body>
+	<ul id="header">
+	</ul>
+	<iframe name="content" class="content" frameborder="0" src="service.html"></iframe>
+</body>
+</html>

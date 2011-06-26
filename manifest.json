@@ -1,0 +1,29 @@
+{
+	"name"				: "Mcfog's Bangumi Plugin",
+	"version"			: "1.4.618.1538",
+	"verno"				: "18",
+	"description"		: "McFog的B娘调教成果合集,神奇功效满载，魔法少女必备",
+	"icons": {
+	  "128": "images/icon.png"
+	},
+	"options_page"		: "options.html",
+	"background_page"	: "background.html",
+	"content_scripts"	: [{
+		"all_frames"	: true,
+		"css"			: [ "fix.css" ],
+		"js"			: [ "common.js", "bgm_home.user.js", "bgm_topic.user.js", "global.inject.js", "inject.js" ],
+		"matches"		: [ "http://bgm.tv/*", "http://bangumi.tv/*", "http://chii.in/*" ],
+		"run_at"		: "document_end"
+	}, {
+		"all_frames"	: true,
+		"js"			: [ "common.js", "before.js" ],
+		"matches"		: [ "http://bgm.tv/*", "http://bangumi.tv/*", "http://chii.in/*" ],
+		"run_at"		: "document_start"
+	}],
+
+	"browser_action"	: {
+		"default_icon": "images/icon.gif", 
+		"popup": "popup.html"
+	},
+	"permissions": [ "tabs", "unlimited_storage", "notifications", "http://bgm.tv/*", "http://bangumi.tv/*", "http://chii.in/*" ]
+}

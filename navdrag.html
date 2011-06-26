@@ -1,0 +1,538 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title>NavDrag</title>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="common.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/blitzer/jquery-ui.css" />
+	<link rel="stylesheet" href="popup.css" />
+	<style type="text/css">
+		body {
+			padding-right:150px;
+			padding-top:80px;
+		}
+		#toolbar {
+			position:fixed;
+			left:0;top:0;
+			z-index:50;
+			background:url(images/a50.png);
+		}
+		#notice {
+			opacity:0.8;
+			position:fixed;
+			left:400px;top:0;
+			z-index:100;
+			background:#DDD;
+			border:1px solid silver;
+			padding:1em;
+			display:none;
+		}
+		#panel>ul>li {
+			padding:5px;
+			margin:5px;
+			background:#EEE;
+			width:240px;
+			float:left;
+			min-height:50px;
+		}
+		
+		#panel ul.list {
+			float:left;
+			padding:5px;
+			margin:5px;
+			border:1px gray solid;	
+			width:220px;
+		}				
+
+		ul.list>li {
+			display:block;
+			padding:2px;
+			margin:2px;
+			border:1px dotted silver;
+			height:22px;
+			line-height:22px;
+			background:#F7F7F7;
+			font-size:16px;
+		}
+		ul.list>li.placeholder {
+			border:1px dashed black;
+		}
+		ul.list>li.first>* {
+			font-weight:bold;
+			font-size:18px;
+		}
+		ul.list>li[index] {
+			cursor:pointer;	
+		}
+		ul.list>li:hover {
+			background:#F5F5F5;
+		}
+		ul.list>li[index]:hover {
+			background:#F0F0F0;	
+		}
+		
+		ul.list>li[index]>.op {
+			float:right;
+			font-size:11px;	
+		}
+		
+		.ui-sortable-helper {
+			opacity:0.8;
+			-webkit-transform:scale(1.2);
+		}
+		
+		#bin {
+			background:orange;
+			width:140px;
+			height:800px;	
+			font-size:32px;
+			line-height:200px;
+			margin:5px;
+			padding:5px;
+			text-align;center;
+			position:fixed;
+			z-index:10;
+			right:0;top:0;
+			opacity:0.9;
+		}
+		#bin li {
+			width:130px;	
+		}
+		.save span {
+			font-weight:bold;
+			color:red;
+		}
+		.save[disabled] span {
+			color:gray;
+		}
+		.dn {
+			display:none;	
+		}
+		.handle {
+			cursor:move;	
+		}
+		.handle a {
+			font-size:13px;
+			cursor:pointer;	
+		}
+		
+	</style>
+</head>
+<body>
+	<div id="toolbar">
+		<div class="slotSet">
+			<input type="radio" name="slotSet" id="slotSetNav" value="nav" checked />
+			<label for="slotSetNav">全站</label>
+			<input type="radio" name="slotSet" id="slotSet1" value="1" />
+			<label for="slotSet1">Slot1</label>
+			<input type="radio" name="slotSet" id="slotSet2" value="2" />
+			<label for="slotSet2">Slot2</label>
+			<input type="radio" name="slotSet" id="slotSet3" value="3" />
+			<label for="slotSet3">Slot3</label>
+			<input type="radio" name="slotSet" id="slotSetPop" value="pop" />
+			<label for="slotSetPop">弹出窗口</label>
+		</div>
+
+		<button onclick="NVD.slotSave();" class="save" disabled>存档</button>
+		<button onclick="NVD.slotRead();">读档</button>
+		<button onclick="NVD.importMenu()">导入菜单</button>
+		<button onclick="NVD.exportNav()">导出整个导航</button>
+		<button onclick="NVD.importNav()">导入整个导航</button>
+		<button onclick="NVD.clearNav()">清空整个导航</button>
+		<br />
+		<button onclick="NVD.newMenu()">新建菜单</button>
+		<button onclick="NVD.toggleItem()">隐藏/显示菜单项</button>
+		<button onclick="NVD.resetDefault()">默认全站导航</button>
+		<button onclick="NVD.resetDefaultPop()">默认弹窗导航</button>
+		
+		
+		
+	</div>
+	<p align="right">链接中可以用<strong>%USERID%</strong>指代您的ID&nbsp;&nbsp;&nbsp;</p>
+	<div id="panel" class="cb"></div>
+	<div id="proto" class="cb"></div>
+	<ul id="bin" class="cb sort list">
+		<li onclick="if(confirm('确认清空？'))NVD.clearBin()" title="点击清空">垃圾箱（不保存）</li>
+	</ul>
+	<div id="item_editor" class="dn">
+		<table>
+			<tr>
+				<td>名称</td>
+				<td>
+					<input type="text" class="text" />
+				</td>
+			</tr>
+			<tr>
+				<td>链接</td>
+				<td>
+					<input type="text" class="href" />
+					<p>
+						站内链接请填相对地址，站外请加http://(自动设置为新窗口打开)，无链接(分割线)请填###
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td colspan=2>
+					<button class="ok">确定</button>
+					<button class="cancel">取消</button><br />(Ctrl+Enter/Alt+S)
+				</td>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript">
+		var NVD = new function() {
+			var $$ = this;
+
+			//public:
+			
+			$$.clearBin = function() {
+				$BIN.children('li[index]').remove();
+			}
+			
+			$$.newMenu = function() {
+				newItem(function(item) {
+					var $wrap = $('<li class="listWrapper">');
+					$wrap.append($makeUl([item]));
+					$PANELul.append($wrap);
+					updateNav();
+				});
+			}
+			
+			$$.importMenu = function() {
+				try {
+					var code = prompt('请输入导出的菜单代码');	
+					if(!code) return;
+					var menu = JSON.tryParse(code);
+					var $wrap = $('<li class="listWrapper">');
+					if(menu.length < 1) throw('menu.length');
+					var $ul = $makeUl(menu);
+					if($ul.find('li[index]').size() < 1) throw('illegal');
+					$wrap.append($ul);
+					$PANELul.append($wrap);
+					updateNav();
+				} catch(e) {
+					console.log(e.stack?e.stack:e);
+					alert('导入失败');
+				}
+			}
+			
+			$$.exportNav = function() {
+				var code = JSON.stringify(NAV);
+				prompt('以下代码用于导入目前整个导航设置', code);
+			}
+			
+			$$.importNav = function() {
+				try {
+					var code = prompt('请输入导出的导航代码');
+					if(!code) return;
+					var nav = JSON.tryParse(code);
+					for(var k in nav) {
+						var menu = nav[k]
+						
+						var $wrap = $('<li class="listWrapper">');
+						if(menu.length < 1) throw('menu.length');
+						var $ul = $makeUl(menu);
+						if($ul.find('li[index]').size() < 1) throw('illegal');
+						$wrap.append($ul);
+						$PANELul.append($wrap);
+					}
+					updateNav();
+				} catch(e) {
+					console.log(e.stack?e.stack:e);
+					alert('导入失败');
+				}
+			}
+			
+			$$.clearNav = function() {
+				if(!confirm('确认清空所有导航菜单？')) return;
+				$PANELul.empty();
+				updateNav();
+			}
+			
+			$$.toggleItem = function() {
+				if(arguments.callee.tog = !arguments.callee.tog) {
+					$('li[index]:not(.first)').hide();
+				} else {
+					$('li[index]:not(.first)').show();
+				}
+				updateNav();
+			}
+			
+			$$.resetDefault = function() {
+				setNav(JSON.tryParse(data.origin));
+				updateNav();
+			};
+			$$.resetDefaultPop = function() {
+				setNav(JSON.tryParse(data.originPop));
+				updateNav();
+			};
+			
+			$$.slotSave = function() {
+				slot.write(curSlot, NAV);
+				updateNav();
+				notice('当前设置已经保存至位置'+curSlot);
+			}
+			$$.slotRead = function() {
+				var sav = slot.read();
+				setNav(sav[curSlot]);
+				updateNav();
+				notice('已经读取位置'+curSlot);
+			}
+			
+			$$.slotSet = function(slot) {
+				curSlot = slot;
+				updateNav();
+			}
+			
+			//private:
+			var curSlot = 'nav';
+			var slot = BG.navdrag.slot;
+			var $PANEL = $('#panel');
+			var $PROTO = $('#proto');
+			var $BIN = $('#bin');
+			var data = BG.navdrag.data;
+			
+			var setNav = function(nav) {
+				$PANELul.empty();
+				for(var k in nav) {
+					var menu = nav[k]
+					
+					var $wrap = $('<li class="listWrapper">');
+					if(menu.length < 1) throw('menu.length');
+					var $ul = $makeUl(menu);
+					if($ul.find('li[index]').size() < 1) throw('illegal');
+					$wrap.append($ul);
+					$PANELul.append($wrap);
+				}
+			}
+			var showItem = function() {
+				$$.toggleItem.tog = false;	
+				$('li[index]:not(.first)').show();
+			}
+			var notice = function(msg) {
+				if(!msg) msg = 'Saved.';
+				if($('#notice').size()==0) $(document.body).append('<div id="notice"></div>');
+				$('#notice').text(msg).show().mouseover(function() {
+					clearTimeout($('#notice')[0].hideTO);
+					$('#notice').stop(true,true).hide();
+				});
+				clearTimeout($('#notice')[0].hideTO);
+				$('#notice')[0].hideTO = setTimeout(function() {
+					$('#notice').fadeOut('normal');
+				}, 3000);
+			}
+			var $makeUl = function(menu) {
+				var $ul = $('<ul index="-1">').addClass('list');
+				for(var i in menu) {
+					var item = menu[i];
+					$ul.append($makeLi(item).attr('index', i));
+				}
+
+				$ul.append($('<li>[新增菜单项]</li>').click(function() {
+					newItem(function(item) {
+						showItem();
+						$ul.children().last().before($makeLi(item));
+						updateNav();
+					});
+				}).disableSelection()).prepend($('<li class="handle">')
+					.append('<a class="handle">[拖动]</a>')
+					.append($('<a>[删除]</a>').click(function() {if(!confirm('确认删除？')) return;$(this).closest('li.listWrapper').remove();updateNav();}))
+					.append($('<a>[导出]</a>').click(function() {
+						var code = JSON.stringify(makeMenu($(this).closest('ul.list')));
+						prompt('以下代码可用于导入此菜单', code);
+					}))
+				).addClass('sort').sortable($.extend({},sortOption,{
+					connectWith:'.sort',
+					items:'li[index]'
+				}));
+				return $ul;
+			};
+			
+			var $makeLi = function(item) {
+				var $li = $('<li index="-1">');
+				if(item.href!='###') {
+					$li.append($('<a>').attr('title', item.href||"").html(item.text||"").addClass('item'));
+				} else {
+					$li.append($('<span>').addClass('item sep').html(item.text));	
+				}
+				$li.append(
+					$('<a class="op">edit</a>').click(function() {
+						var $li = $(this).parent();
+						var $ul = $li.closest('ul.list');
+						editItem($ul.attr('index'), $li.attr('index'), function(item) {
+								$li.after($makeLi(item));
+								$li.remove();
+								updateNav();
+						});
+					})
+				);
+				return $li;
+			}
+			
+			var makeMenu = function($ul) {
+				var menu = [];
+				$ul.children('li[index]').each(function() {
+					$item = $(this).find('.item');
+					item = {
+						text:$item.html(),
+						href:$item.is('.sep') ? '###' : $item.attr('title')
+					};
+					
+					menu.push(item);
+				});
+				return menu;
+			}
+			var $findLi = function(a,b) {
+				return $('ul.list[index='+a+']>li[index='+b+']');
+			}
+			var editItem = function(a, b, callback, context) {
+				var $li = $findLi(a, b);
+				if($li.size() == 0) callback.call(context, false);
+				var $dialog = $('#item_editor').clone().attr('id', null);
+				$dialog.dialog({
+					width:600,
+					modal:true,
+					close:function() {
+						$dialog.remove();
+					}
+				});
+				$dialog.find('button.cancel').click(function() {
+					$dialog.remove();
+				});
+				$dialog.find('button.ok').click(function() {
+					var text = $dialog.find('input.text').val();
+					var href = $dialog.find('input.href').val();
+					//href = href.replace(/^[a-z]+?:\/\/[^\/]+/i, '');
+					if(!/^[\w-]+:\/\/.+/.test(href) && href[0]!='/'&&href[0]!='#') href = '/' + href;
+					callback.call(context, {text:text, href:href});
+					$dialog.remove();
+				});				
+				
+				var $item = $li.find('.item');
+				$dialog.find('input.text').val($item.html());
+				$dialog.find('input.href').val($item.is('.sep') ? '###' : $item.attr('title'));
+				$dialog.bind('keydown', function(ev) {
+					if(ev.keyCode == '13' && ev.ctrlKey) $dialog.find('button.ok').click();
+					if(ev.keyCode == '83' && ev.altKey) $dialog.find('button.ok').click();
+				});
+			}
+			var newItem = function(callback, context) {
+				var $dialog = $('#item_editor').clone().attr('id', null);
+				$dialog.dialog({
+					width:600,
+					modal:true,
+					close:function() {
+						$dialog.remove();
+					}
+				});
+				$dialog.find('button.cancel').click(function() {
+					$dialog.remove();
+				});
+				$dialog.find('button.ok').click(function() {
+					var text = $dialog.find('input.text').val();
+					var href = $dialog.find('input.href').val();
+					//href = href.replace(/^[a-z]+?:\/\/[^\/]+/i, '');
+					if(!/^(http|https):\/\/.+/.test(href) && href[0]!='/'&&href[0]!='#') href = '/' + href;
+					callback.call(context, {text:text, href:href});
+					$dialog.remove();
+				});
+				$dialog.bind('keydown', function(ev) {
+					if(ev.keyCode == '13' && ev.ctrlKey) $dialog.find('button.ok').click();
+					if(ev.keyCode == '83' && ev.altKey) $dialog.find('button.ok').click();
+				});
+			}
+			
+			if(!S.navbar_slot) {
+				S.navbar_slot = JSON.stringify({nav:JSON.tryParse(data.origin), pop:JSON.tryParse(data.originPop)});
+			}
+			var NAV = slot.read('nav');
+			var adjustFirst = function($ul) {
+				$ul.each(function() {
+					$(this).children('li[index].first').removeClass('first');
+					$(this).children('li[index]:first').addClass('first');					
+				});
+			}
+			var updateNav = function(event, ui) {
+				adjustFirst($PANEL.find('ul.list'));
+
+				NAV = [];
+				var maxHeight = 0;
+				$PANEL.find('ul.list').each(function(i) {
+					$(this).attr('index', i);
+					NAV.push(makeMenu($(this)));
+					$(this).children('li[index]').each(function(i) {
+						$(this).attr('index', i);
+					});
+					if($(this).children('li[index]:visible').size()==1) {
+						$(this).sortable('option', 'cancel', '*');
+					} else {
+						$(this).sortable('option', 'cancel', false);
+					}
+					maxHeight = Math.max(maxHeight, $(this).outerHeight());
+				});
+				$PANEL.find('li.listWrapper').css('minHeight', maxHeight+10);
+				if(JSON.stringify(NAV) != JSON.stringify(slot.read(curSlot))) {
+					$('button.save').button('option', {'disabled': false});
+				} else {
+					$('button.save').button('option', {'disabled': true});
+				}
+			}
+			$(document).bind('sortupdate', function() {setTimeout(updateNav)});
+			
+			var startSort = function(event, ui) {
+				$(this).find('.placeholder').height($(ui.item).height());
+			};
+			var sortOption = {
+				placeholder:'placeholder',
+				start:startSort,
+				distance: 5
+			}
+			
+			var $PANELul = $('<ul>').appendTo($PANEL);
+			$(NAV).each(function(i) {
+				
+				var $list = $makeUl(this).attr('index', i);
+				
+				
+				$PANELul.append($('<li class="listWrapper">').append($list));
+			});
+			
+
+			$PANELul.sortable($.extend({},sortOption,{
+				//none
+			})).find('li.listWrapper').live('mousedown', function(ev) {
+				return $(ev.target).is('.handle');
+			});
+			
+			$BIN.sortable($.extend({},sortOption,{
+				connectWith:'.sort',
+				items:'li[index]',
+			}));
+			updateNav();
+			$('button').button({disabled:'true'});
+		};
+		
+		
+			$('.slotSet').buttonset().buttonset('widget').find('.ui-button').click(function() {
+				setTimeout(function() {
+					NVD.slotSet($('#'+$('.slotSet [aria-pressed=true]').attr('for')).val());
+				})
+			});
+/*
+NAV = []
+$('#nav_menu>li').each(function(i) {
+	var $t = $(this);
+	var $top = $t.children('a');
+	var menu = [{text:$top.text(), href:$top.attr('href')}];
+	$t.find('li').each(function() {
+		var text = $(this).text();
+		var $item = $(this).find('a');
+		if($item.size()==0) menu.push({text:text,href:'###'});
+		else menu.push({text:text,href:$item.attr('href')});
+	});
+	NAV.push(menu)
+});*/		
+	</script>
+</body>
+</html>
