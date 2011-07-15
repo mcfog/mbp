@@ -56,12 +56,14 @@
 			
 			
 			var dp = S['defaultPop'];
-			if(!dp| dp=='memory') {
-				if(S['last_iframe_src']) $frm.attr('src', S['last_iframe_src']);
-				else $frm.attr('src', "service.html");
-			} else {
-				$frm.attr('src', dp);
-				$('a[href='+dp+']').closest('li').addClass('focus');
+			if(!BG.views.registerPopup(window)) {
+				if(!dp|| dp=='memory') {
+					if(S['last_iframe_src']) $frm.attr('src', S['last_iframe_src']);
+					else $frm.attr('src', "service.html");
+				} else {
+					$frm.attr('src', dp);
+					$('a[href='+dp+']').closest('li').addClass('focus');
+				}
 			}
 			
 			$frm.load(function() {
@@ -79,8 +81,16 @@
 				if(ev.button!=0) return;
 				$('li').removeClass('focus');
 				$(this).closest('li').addClass('focus');
-			});
+			});			
+			
+			if(chrome.extension.getViews({type:'popup'})[0]!=window) {
+				$('img.qb').hide()
+			}
 		});
+		window.popopup = function() {
+			param = 'location=0,resizable=0,width=550,height=600'
+			var win = window.open(location.href, null, param)
+		}
 	</script>
 	<link rel="stylesheet" href="popup.css" />
 	<style type="text/css">
@@ -195,10 +205,18 @@
 		iframe {
 			border-top:1px solid gray;	
 		}
+		
+		img.qb {
+			border:1px solid white;
+		}
+		img.qb:hover {
+			border:1px solid gray;
+		}
 	</style>
 	<base target="content" />
 </head>
 <body>
+	<img class="qb" src="images/101.png" style="position:absolute;right:0" onclick="popopup()" alt="" />
 	<ul id="header">
 	</ul>
 	<iframe name="content" class="content" frameborder="0" src="service.html"></iframe>

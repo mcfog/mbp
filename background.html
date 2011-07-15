@@ -272,6 +272,26 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 			
 			return $$;
 		})();
+		
+		bgm.views = {
+			registerPopup:(function() {
+				var windows = [],
+				$$ = function(win) {
+					var ret = false
+					if(windows.length>0) {
+						var last = windows.pop()
+						var href = last.$('iframe[name=content]').contents()[0].location.href
+						win.$('iframe[name=content]').attr('src', href)
+						last.close()
+						ret = true
+					}
+					while(windows.length>0) windows.pop().close()
+					windows.push(win)
+					return ret
+				}
+				return $$;
+			})(),
+		}
 		/********************************************************
 		 *bgm end
 		 ********************************************************/
