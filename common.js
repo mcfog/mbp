@@ -199,3 +199,45 @@ JSON.tryParse = function(json) {
 		return {};	
 	}
 }
+
+
+$.extend($.fn, {
+	//将元素尺寸控制在w*h内，保持比例，带PAD
+	squash:function(w, h) {
+		var me = arguments.callee;
+		var $obj = $(this);
+		if(!$obj) return $obj;
+		
+		$obj.each(function() {
+			var $this = $(this);
+			if($this.attr('tagName')!='IMG') return;
+			if($this.width() <= 0 && $this.height() <=0) {
+				$this.one('load', function() {
+					setTimeout(function() {
+						me.call($this.get(0), w, h);
+					},1);
+				});
+				return;
+			}
+
+			var wh = $this.width()/$this.height();
+			if(h*wh > w) {
+				$this.width(w);
+				$this.height(w/wh);
+			} else {
+				var pad = .5*(w - h*wh);
+				$this.css({'padding-left':pad,'padding-right':pad});
+			}
+			if(w/wh > h) {
+				$this.width(h*wh);
+				$this.height(h);
+			} else {
+				var pad = .5*(h - w/wh);
+				$this.css({'padding-top':pad,'padding-bottom':pad});
+			}
+		});
+		
+		return $obj;
+	},
+
+})

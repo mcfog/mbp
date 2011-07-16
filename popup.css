@@ -50,3 +50,8 @@ strong {
 }
 .cb{zoom:1;clear:both;}
 .cb:after{clear:both;content:" ";display:block}
+
+.fl{float:left}
+.fr{float:right}
+
+.hide{display:none}
