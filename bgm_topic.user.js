@@ -61,7 +61,7 @@ var judgeSpam = function($msg, $context) {
 	if(sym_pts > .8) point += 100.2; else if(sym_pts > .5) point += 20.2 + (sym_pts - .5)*15;
 	
 	//重复罚分
-	var context = $context.clone().find('.quote').remove().end().text();
+	var context = typeof $context == 'string' ? $context : $context.clone().find('.quote').remove().end().text();
 	var re = countSub(trim(msg), context) - 1;
 	if(re > 5) {
 	 	point += 100.4;
@@ -293,12 +293,13 @@ var fn_fade = function($r) {
 		
 		
 			if($replies.size()<10) return;
+			var context = $('#comment_list').clone().find('.quote').remove().end().text();
 			var need_fade = function($r) {
 				var $msg = $r.find('.message');
 				if($msg.size() == 0) $msg = $r.find('.cmt_sub_content');
 				
 				if(ext_opt('fadeSpam')) {
-					var pts = judgeSpam($msg, $('#comment_list'));
+					var pts = judgeSpam($msg, context);
 					if(pts > parseInt(ext_opt('fadeSpam'))) return true;
 				}
 				
