@@ -1,0 +1,183 @@
+.bgm {
+	height:120px;
+	width:250px;
+	margin:10px;
+	border:1px solid rgba(200,200,200,0.1);
+}
+.bgm h3 {
+	font-size:18px;
+	width:250px;
+	overflow:hidden;
+	height:1.5em;
+	line-height:1.5em;
+	word-break:break-all;
+	padding-left:5px;
+}
+.thumb {
+	float:left;
+	height:120px;
+	width:100px;
+}
+.thumb img {
+	max-height:120px;
+	max-width:100px;
+}
+.panel {
+	height:120px;
+	float:right;
+	width:145px;
+}
+.panel .progress {
+	border-radius:8px;
+	border:1px solid silver;
+	height:90px;
+	width:100%;
+	position:relative;
+}
+
+.panel .progress>div {
+	border-radius:8px;
+	height:90px;
+	float:left;	
+}
+.panel .progress .past {
+	position:absolute;
+	left:0;
+	width:38px;
+	background:rgba(0,168,255,1);
+	z-index:1;
+}
+.panel .progress .future {
+	position:absolute;
+	right:0;
+	width:38px;
+	background:rgba(164,164,164,1);
+	z-index:0;
+}
+.panel .progress .now {
+	position:absolute;
+	left:15px;
+	border-radius:25px;
+	border:1px solid silver;
+	width:120px;
+	background:white;
+	position:relative;
+	z-index:10;
+	margin:-1px;
+}
+
+.panel .progress .epbox {
+	padding:3px 0;
+	width:120px;
+	float:left;
+	display:none;
+}
+.panel .progress .past:hover .epbox,.panel .progress .future:hover .epbox {
+	display:block;
+}
+.panel .progress .future .epbox {
+	width:90px;
+	float:right;
+}
+.panel .progress .epbox li {
+	float:left;
+	border:1px solid rgba(255,255,255,0.5);
+	margin:-1px;
+	padding:5px 4px;
+	font-size:16px;
+	width:20px;
+	cursor:pointer;
+}
+.panel .progress .future .epbox li {
+	border-color:rgba(128,128,128,0.5);
+}
+.panel .progress .epbox li:hover {
+	background-color: rgba(255,255,255,0.5);
+}
+
+.panel .progress .epbox li.more {
+	width:48px;/* 2*20 + 2*4 */
+	text-align:center;
+	font-size:14px;
+}
+
+.panel .epinfo {
+	text-align:center;
+}
+
+.panel .epinfo .title {
+	display:block;
+	font-size:24px;
+	width:3em;
+	height:1.2em;
+	padding-top:10px;
+	line-height:1.2em;
+	overflow:hidden;
+	margin:0 auto;
+}
+.panel .epinfo .button {
+	margin-top:5px;
+	line-height:16px;
+	font-size:16px;
+}
+
+.panel .epinfo .done-button {
+	background-color:#91bd09;
+}
+.panel .epinfo .unair-button {
+	font-size:12px;
+	background-color:#808080;
+}
+
+.panel .epinfo .done-button:hover {
+	-webkit-animation-name: greenPulse;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+}
+.panel .epinfo .discuss {
+	background:url(images/discuss.png) no-repeat center center;
+	width:16px;
+	height:16px;
+	padding:5px;
+	margin:-5px;
+	display:inline-block;
+}
+.panel .epinfo .discuss:hover {
+	background-image:url(images/discuss.hover.png)
+}
+
+.stat {
+	padding-top:5px;
+}
+.stat>span {
+	margin:0 3px;
+	padding-left:18px;
+	line-height:20px;
+	font-size:16px;
+	background-repeat:no-repeat;
+	cursor:default;
+}
+.stat>span:hover {
+	background-color:rgba(228,228,228,0.3);
+}
+
+.stat .all {
+	background-image:url(images/all.png);
+}
+.stat .air {
+	background-image:url(images/air.png);
+}
+.stat .done {
+	background-image:url(images/done.png);
+}
+
+
+.button { background: #222 url(/images/overlay-button.png) repeat-x 0 0; display: inline-block; padding: 5px 15px 6px; color: #fff !important; font-size: 13px; font-weight: bold; line-height: 1; text-decoration: none; -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.25); -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.25); text-shadow: 0 -1px 1px rgba(0,0,0,0.25); border-bottom: 1px solid rgba(0,0,0,0.25); position: relative; cursor: pointer; overflow: visible; width: auto; }
+.button:hover { background-color: #111; color: #fff; }
+.button:active { -webkit-transform: translateY(1px); -moz-transform: translateY(1px); }
+
+@-webkit-keyframes greenPulse {
+	from { background-color: #91bd09; -webkit-box-shadow:: 0 0 9px #333; }
+	50% { background-color: #AEE30D; -webkit-box-shadow:: 0 0 18px #AEE30D; }
+	to { background-color: #91bd09; -webkit-box-shadow:: 0 0 9px #333; }
+}
