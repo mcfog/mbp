@@ -10,20 +10,20 @@
 	"background_page"	: "background.html",
 	"content_scripts"	: [{
 		"all_frames"	: true,
-		"css"			: [ "fix.css" ],
-		"js"			: [ "common.js", "bgm_home.user.js", "bgm_topic.user.js", "global.inject.js", "inject.js" ],
+		"css"				: [ "fix.css" ],
+		"js"				: [ "common.js", "bgm_home.user.js", "bgm_topic.user.js", "global.inject.js", "inject.js" ],
 		"matches"		: [ "http://bgm.tv/*", "http://bangumi.tv/*", "http://chii.in/*" ],
 		"run_at"		: "document_end"
 	}, {
 		"all_frames"	: true,
-		"js"			: [ "common.js", "before.js" ],
+		"js"				: [ "common.js", "before.js" ],
 		"matches"		: [ "http://bgm.tv/*", "http://bangumi.tv/*", "http://chii.in/*" ],
 		"run_at"		: "document_start"
 	}],
 
 	"browser_action"	: {
-		"default_icon": "images/icon.gif", 
-		"popup": "popup.html"
+		"default_icon" : "images/icon.gif", 
+		"popup" : "popup.html"
 	},
-	"permissions": [ "tabs", "unlimited_storage", "notifications", "http://bgm.tv/*", "http://bangumi.tv/*", "http://chii.in/*" ]
+	"permissions" : [ "tabs", "unlimited_storage", "notifications", "http://bgm.tv/*", "http://bangumi.tv/*", "http://chii.in/*" ]
 }

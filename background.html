@@ -39,7 +39,7 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 			$.ajax({
 				url:chrome.extension.getURL('manifest.json'),
 				error:r,//because extension wont return HTTP status 200, so jQuery thought there's an error...
-				success:r,
+				success:function(rst,text,xhr){r(xhr);},
 			});
 		}
 		
@@ -233,30 +233,27 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 		
 		
 		bgm.cacheGet = (function() {
-			var me = {};
+			var me = {
+				cache:{},
+				expire:{}
+			};
 			var $$ = function(url, callback, options) {
 				options = $.extend({
 					force:false,
 					expire:45
 				}, options);
-				//var me = arguments.callee;
-				if(!me.cache) me.cache = {};
-				if(!me.cacheTO) me.cacheTO = {};
-				if(!options.force && me.cache[url]) {
+				if(!options.force && me.cache[url] && (!me.expire[url] || me.expire[url] > Date.now())) {
 					if(callback)callback.apply(this, me.cache[url]);
 					for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, me.cache[url]);
 					return;
 				}
 				$.get(url, function(h) {
 					me.cache[url] = arguments;
-					clearTimeout(me.cacheTO[url]);
-					me.cacheTO[url] = setTimeout(function() {
-						me.cache[url] = false;
-					}, Math.max(options.expire, 10) * 1000);
+					me.expire = Date.now() + Math.max(options.expire, 10) * 1000;
 	
 					if(callback)callback.apply(this, arguments);
 					for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, arguments);
-				}, 'html');
+				}, 'text');
 			};
 			$$.reset = function(url) {
 				me.cache[url] = false;
