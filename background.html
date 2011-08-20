@@ -264,7 +264,8 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 				$$.listeners[url].push(cb);
 			}
 			$$.shout = function(url, h) {
-				for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, [h])
+				me.cache[url] = Array.prototype.slice.call(arguments,1);
+				for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, [h]);
 			}
 			
 			return $$;

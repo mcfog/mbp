@@ -26,13 +26,15 @@
 					$hp.find('.prg_list a[subject_id='+id+']').each(function()
 					{
 						var $this = $(this), epid = parseInt($this.attr('id').split('_')[1]),
-							onair = true,$prg=$hp.find('#prginfo_'+epid);
+							onair = true,done = false, 
+							$prg=$hp.find('#prginfo_'+epid);
 
 						prg.count.all++;
 						if($this.is('.epBtnWatched')) {
 							prg.count.done++;
+							done = true;
 						}
-						if(!$this.is('.epBtnNA')) {//如果没上映的就被抛弃/想看了会出Bug，暂时不解决
+						if(!$this.is('.epBtnNA,.epBtnToday')) {//如果没上映的就被抛弃/想看了会出Bug，暂时不解决
 							prg.count.air++;
 						} else {
 							onair = false;
@@ -45,19 +47,20 @@
 							id:epid,
 							title:$this.attr('title'),
 							onair:onair,
+							done:done,
 							airDate:airDate ? new Date(airDate) : false
 						};
 					});
-				})
+					var $div = $('<div>');
+					$div.appendTo('#container');
+					$div.render($('#tmpl_bgm'), prg);
+				});//prgli.each1
 			}, {
 				expire:900//i hate wating!
 			});
-			$.each(PRG, function(k,prg)
-			{
-				var $div = $('<div>');
-				$div.appendTo('#container');
-				$div.render($('#tmpl_bgm'), prg);
-			});
+//			$.each(PRG, function(k,prg)
+//			{
+//			});
 			
 			
 			$(document.body).delegate('.bgm .progress .past', 'mouseenter', function() {
@@ -110,32 +113,39 @@
 				$this.stop(true, true).animate({
 					width:38,
 				})
+			}).delegate('.bgm .progress .epbox li, .epinfo a.title', 'click', function()
+			{
+				var $this = $(this), id = $this.closest('*[subject_id]').attr('subject_id'),
+					num = $this.attr('_num'), epid = PRG[id].ep[num].id;
+				window.open(S.domain+'/ep/'+epid);
 			});
-
-
-		})
+		});
 	</script>
 </head>
 <body>
 <div id="container" style="width:550px;"></div>
 <script type="text/x-sjtp" id="tmpl_bgm">
-	<<~setTimeout(function() {
+	<<~
+	setTimeout(function() {
 		$container.find('.thumb img').squash(100,119);
 	})>>
-	<div class="bgm">
-		<h3 title="<<:title>>"><<:title>></h3>
+	<div class="bgm" subject_id="<<:id>>">
+		<h3 title="<<:title>>">
+			<a href="<<:S.domain>>/subject/<<:id>>" target="_blank"><<:title>></a>
+		</h3>
 		<div class="thumb">
 			<img src="http://lain.bgm.tv/pic/cover/s<<:cover>>" alt="" />
 		</div>
 		<div class="panel">
 			<div class="progress">
-				<div class="past">
+				<<~var nowNum=1;while(ep[nowNum] && ep[nowNum].done) nowNum+=1;>>
+				<div class="past<<:nowNum==1?' hide':''>>">
 					<div class="hide">
 						<ul class="epbox">
-							<<if count.done > 11>>
+							<<if nowNum > 11>>
 								<li class="more">更早</li>
 							<</if>>
-							<<~for(var k=count.done-9;k<=count.done;k++) {if(k<=0)continue;>>
+							<<~for(var k=nowNum-10;k<nowNum;k++) {if(k<=0)continue;>>
 								<<if k<10>>
 									<li _num=<<:k>>>0<<:k>></li>
 								<<elif k<100>>
@@ -150,16 +160,15 @@
 				<div class="now">
 					<div class="epinfo">
 					<<if count.done < count.all>>
-						<<~var num = count.done+1>>
-						<a class="title" href="javascript:;">ep.<<:num<10?"0"+num:num>></a>
-						<<if ep[num].onair>>
+						<a class="title" href="javascript:;" _num=<<:nowNum>>>ep.<<:nowNum<10?"0"+nowNum:nowNum>></a>
+						<<if ep[nowNum].onair>>
 							<a class="button done-button">
 								看过
-								<div class="discuss"></div>
+								<div class="discuss" title="标记看过&打开讨论"></div>
 							</a>
 						<<else>>
 							<a class="button unair-button">
-								<<:ep[num].airDate?ep[num].airDate.format('yyyy-mm-dd'):"近期上映">>
+								<<:ep[nowNum].airDate?ep[nowNum].airDate.format('yyyy-mm-dd'):"近期上映">>
 							</a>
 						<</if>>
 					<<else>>
@@ -171,11 +180,10 @@
 					<</if>>
 					</div>
 				</div>
-				<div class="future">
-					
+				<div class="future<<:nowNum==count.all?' hide':''>>">					
 					<div class="hide">
 						<ul class="epbox">
-							<<~for(var k=count.done+1;k<=count.done+7;k++) {>>
+							<<~for(var k=nowNum;k<=count.done+6;k++) {if(k>count.all) continue;>>
 								<<if k<10>>
 									<li _num=<<:k>>>0<<:k>></li>
 								<<elif k<100>>

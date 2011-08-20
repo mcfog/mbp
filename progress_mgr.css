@@ -6,7 +6,8 @@
 	padding:2px;
 	float:left;
 }
-.bgm h3 {
+.bgm h3 a {
+	display:inline-block;
 	font-size:18px;
 	width:245px;
 	overflow:hidden;
