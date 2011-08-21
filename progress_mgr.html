@@ -63,7 +63,7 @@
 //			});
 			
 			
-			$(document.body).delegate('.bgm .progress .past', 'mouseenter', function() {
+			$(document.body).delegate('.bgm .panel .past', 'mouseenter', function() {
 				var $this = $(this);
 				var $prg = $this.parent();
 				$prg.find('.now .epinfo').stop(true, true).fadeTo('fast', 0);
@@ -76,7 +76,7 @@
 				}, function() {
 					$this.find('.hide').show();
 				})
-			}).delegate('.bgm .progress .past', 'mouseleave', function() {
+			}).delegate('.bgm .panel .past', 'mouseleave', function() {
 				var $this = $(this);
 				var $prg = $this.parent();
 				$prg.find('.now .epinfo').stop(true, true).delay(200).fadeTo('fast', 1);
@@ -90,7 +90,7 @@
 				})
 			});
 
-			$(document.body).delegate('.bgm .progress .future', 'mouseenter', function() {
+			$(document.body).delegate('.bgm .panel .future', 'mouseenter', function() {
 				var $this = $(this);
 				var $prg = $this.parent();
 				$prg.find('.now .epinfo').fadeOut('fast');
@@ -102,7 +102,7 @@
 				}, function() {
 					$this.find('.hide').show();
 				})
-			}).delegate('.bgm .progress .future', 'mouseleave', function() {
+			}).delegate('.bgm .panel .future', 'mouseleave', function() {
 				var $this = $(this);
 				var $prg = $this.parent();
 				$prg.find('.now .epinfo').delay(200).fadeIn('fast');
@@ -113,17 +113,45 @@
 				$this.stop(true, true).animate({
 					width:38,
 				})
-			}).delegate('.bgm .progress .epbox li, .epinfo a.title', 'click', function()
+			}).delegate('.bgm .panel .epbox li, .epinfo a.title', 'click', function()
 			{
 				var $this = $(this), id = $this.closest('*[subject_id]').attr('subject_id'),
-					num = $this.attr('_num'), epid = PRG[id].ep[num].id;
+					num = $this.closest('*[_num]').attr('_num'), epid = PRG[id].ep[num].id;
 				window.open(S.domain+'/ep/'+epid);
+			}).delegate('.bgm .panel .epinfo .done-button', 'click', function()
+			{
+				var $this = $(this), id = $this.closest('*[subject_id]').attr('subject_id'),
+					num = $this.closest('*[_num]').attr('_num'), epid = PRG[id].ep[num].id;
+				
+				EXT.sendRequest({
+					do:'injectAjax',
+					options:{
+						url:'/subject/ep/'+epid+'/status/watched?ajax=1',
+						type:'POST',
+						headers:{'Content-Type':'application/xml'}
+					}
+				}, function(res) {
+					PRG[id].ep[num].done = true;
+					PRG[id].count.done += 1;
+					$('.bgm[subject_id='+id+']').parent().render($('#tmpl_bgm'), PRG[id]);
+					BG.cacheGet(S.domain, false, {force:true});
+					$(document.body).trigger('mbp-done', [epid]);
+				});
+			}).delegate('.bgm .panel .epinfo .discuss', 'click', function()
+			{
+				var $this = $(this), id = $this.closest('*[subject_id]').attr('subject_id'),
+					num = $this.closest('*[_num]').attr('_num'), epid = PRG[id].ep[num].id;
+				$(document.body).bind('mbp-done.'+epid, function(event, _epid) {
+					if(epid!=_epid) return;
+					$(document.body).unbind('mbp-done.'+epid);
+					window.open(S.domain+'/ep/'+epid);
+				})
 			});
 		});
 	</script>
 </head>
 <body>
-<div id="container" style="width:550px;"></div>
+<div id="container"></div>
 <script type="text/x-sjtp" id="tmpl_bgm">
 	<<~
 	setTimeout(function() {
@@ -158,9 +186,9 @@
 					</div>
 				</div>
 				<div class="now">
-					<div class="epinfo">
+					<div class="epinfo" _num=<<:nowNum>>>
 					<<if count.done < count.all>>
-						<a class="title" href="javascript:;" _num=<<:nowNum>>>ep.<<:nowNum<10?"0"+nowNum:nowNum>></a>
+						<a class="title" href="javascript:;">ep.<<:nowNum<10?"0"+nowNum:nowNum>></a>
 						<<if ep[nowNum].onair>>
 							<a class="button done-button">
 								看过

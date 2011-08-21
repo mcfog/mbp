@@ -1,7 +1,8 @@
 .bgm {
 	height:150px;
 	width:250px;
-	margin:8px;
+	overflow:hidden;
+	margin:8px 5px;
 	border:1px solid rgba(200,200,200,0.5);
 	padding:2px;
 	float:left;

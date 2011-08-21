@@ -156,11 +156,17 @@
 			})();
 			
 			//自定导航
-			if(ext_opt('betterNav')) (function() {
+			if(ext_opt('betterNav')) $(function() {
 				$('style._betterNav').remove();
 				var NAV = ext_opt('navbar_slot');
 				if(!NAV) return $('#nav_menu>li:first').remove();
-				var userid = $('#menu a.nav[href^=/anime/list/]:first').attr('href').match(/\/anime\/list\/(.+?)\/./)[1];
+				var userid = $('#menu a.nav[href^=/anime/list/]:first').attr('href').match(/\/anime\/list\/(.+?)\/./);
+				if(!userid) {
+					return setTimeout(arguments.callee, 1000);
+				} else {
+					userid = userid[1];
+				}
+				
 				NAV = NAV.replace(/%USERID%/g, userid);
 				NAV = JSON.parse(NAV).nav;
 				if(!NAV) return $('#nav_menu>li:first').remove();
@@ -193,7 +199,7 @@
 					}
 					$('#nav_menu').append($li);
 				});
-			})();
+			});
 	
 				
 			if(ext_opt('xPic')) $('img').bind('error', function() {
@@ -365,6 +371,23 @@
 				});
 				rtButton();
 			});
+			
+			//Inject
+			EXT.sendRequest({do:'evalBG',what:'function(){return $("#inject").attr("src")}'}, function(res)
+			{
+				if(location.href!=res) return;
+				EXT.onRequest.addListener(function (request, sender, sendResponse) {
+					if(request.do == 'injectAjax') {
+						var opt = $.extend({}, request.options, {
+							success:function() {
+								sendResponse(Array.prototype.slice.call(arguments));
+							}
+						});
+						$.ajax(opt);
+					}
+				});
+
+			})
 
 			/********************************************************
 			 *Main Code End
