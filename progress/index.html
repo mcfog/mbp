@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../popup.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="style.css" media="all" />
+	<script type="text/javascript" src="../common.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+<div id="container">
+	<img src="images/loading.gif" alt="" />
+</div>
+<script type="text/x-sjtp" id="tmpl_loading">
+	<img src="images/loading.gif" alt="" />
+</script>
+<script type="text/x-sjtp" id="tmpl_one">
+	<<~setTimeout(function() {
+		var $$ = function() {return $container.find.apply($container, arguments)};
+//		$(document.body).click(function(event) {
+//			if(!$(event.target).is('#container *')) {
+//				$(document.body).unbind('click', arguments.callee);
+//				setTimeout(renderAll);
+//			}
+//		});
+		$$('.back').click(renderAll);
+		$$('.epbox li[_num='+nowNum+']').addClass('current');
+		$$('.epbox').css('left', nowNum < 5 ? 0 : -29*(Math.min(count.all - 12, nowNum-5)));
+		$$('.content').render($('#tmpl_one_ep'), {
+			ep:ep[nowNum],
+			id:id,
+			num:nowNum
+		});
+		$$('.epbox li').click(function(event) {
+			event.stopPropagation();
+		}).mouseenter(function() {
+			var $this = $(this);
+			$$('.content').render($('#tmpl_one_ep'), {
+				ep:ep[$this.attr('_num')],
+				id:id,
+				num:$this.attr('_num')
+			});			
+			$this.siblings('.current').removeClass('current');
+			$(this).addClass('current');
+		});
+	})
+	>>
+	<div class="one" subject_id="<<:id>>">
+		<div class="back button">
+			<img src="images/back.png" alt="" />
+			返回
+		</div>
+		<h2 title="<<:title>>">
+			<a href="<<:S.domain>>/subject/<<:id>>" target="_blank"><<:title>></a>
+		</h2>
+		<div class="thumb">
+			<img src="http://lain.bgm.tv/pic/cover/g<<:cover>>" alt="" />
+		</div>
+		<div class="epframe">
+			<div class="prev"></div>
+			<div class="mask">
+				<ul class="epbox">
+				<<~for(k in ep) {>>
+					<<if k<10>>
+						<li _num=<<:k>> class="<<:epClass(ep[k])>>">0<<:k>></li>
+					<<elif k<100>>
+						<li _num=<<:k>> class="<<:epClass(ep[k])>>"><<:k>></li>
+					<<else>>
+						<li _num=<<:k>> class="small <<:epClass(ep[k])>>"><<:k>></li>
+					<</if>>
+				<<~}>>
+				</ul>
+			</div>
+			<div class="next"></div>
+		</div>
+		<div class="content cb panel">
+		</div>
+	</div>
+</script>
+
+<script type="text/x-sjtp" id="tmpl_one_ep">
+	<h3><<:ep.title>></h3>
+	<div class="epinfo">
+		<div class="tip">
+			<<:ep.$tip.find('hr').remove().end().html()>>
+		</div>
+		<div class="fr" subject_id=<<:id>> _num=<<:num>>>
+			<<if ep.done>>
+				<a class="button done-button">
+					已看过
+				</a>
+			<<elif ep.onair>>
+				<a class="button air-button">
+					看过
+					<div class="discuss" title="标记看过&打开讨论"></div>
+				</a>
+			<<else>>
+				<a class="button unair-button">
+					<<:ep.airDate?ep.airDate.format('yyyy-mm-dd'):"近期上映">>
+				</a>
+			<</if>>
+		</div>
+	</div>
+</script>
+
+<script type="text/x-sjtp" id="tmpl_bgm">
+	<<~setTimeout(function() {
+		$container.find('.thumb img').squash(100,119);
+	})>>
+	<div class="bgm" subject_id="<<:id>>">
+		<h3 title="<<:title>>">
+			<a href="<<:S.domain>>/subject/<<:id>>" target="_blank"><<:title>></a>
+		</h3>
+		<div class="thumb">
+			<img src="http://lain.bgm.tv/pic/cover/s<<:cover>>" alt="" />
+		</div>
+		<div class="panel">
+			<div class="progress">
+				<<~var nowNum=1;while(ep[nowNum] && ep[nowNum].done) nowNum+=1;>>
+				<div class="past<<:nowNum==1?' hide':''>>">
+					<div class="hide">
+						<ul class="epbox">
+							<<if nowNum > 11>>
+								<li _num=<<:nowNum-11>> class="more">更早</li>
+							<</if>>
+							<<~for(var k=nowNum-10;k<nowNum;k++) {if(k<=0)continue;>>
+								<<if k<10>>
+									<li _num=<<:k>> class="<<:epClass(ep[k])>>">0<<:k>></li>
+								<<elif k<100>>
+									<li _num=<<:k>> class="<<:epClass(ep[k])>>"><<:k>></li>
+								<<else>>
+									<li _num=<<:k>> class="small <<:epClass(ep[k])>>"><<:k>></li>
+								<</if>>
+							<<~}>>
+						</ul>
+					</div>
+				</div>
+				<div class="now">
+					<div class="epinfo" _num=<<:nowNum>>>
+					<<if count.done < count.all>>
+						<a class="title" href="javascript:;">ep.<<:nowNum<10?"0"+nowNum:nowNum>></a>
+						<<if ep[nowNum].onair>>
+							<a class="button air-button">
+								看过
+								<div class="discuss" title="标记看过&打开讨论"></div>
+							</a>
+						<<else>>
+							<a class="button unair-button">
+								<<:ep[nowNum].airDate?ep[nowNum].airDate.format('yyyy-mm-dd'):"近期上映">>
+							</a>
+						<</if>>
+					<<else>>
+						<span class="title">Fin.</span>
+						<a class="button air-button">
+							看过
+							<div class="discuss"></div>
+						</a>
+					<</if>>
+					</div>
+				</div>
+				<div class="future<<:nowNum==count.all?' hide':''>>">					
+					<div class="hide">
+						<ul class="epbox">
+							<<~for(var k=nowNum;k<=count.done+6;k++) {if(!ep[k]) continue;>>
+								<<if k<10>>
+									<li _num=<<:k>> class="<<:epClass(ep[k])>>">0<<:k>></li>
+								<<elif k<100>>
+									<li _num=<<:k>> class="<<:epClass(ep[k])>>"><<:k>></li>
+								<<else>>
+									<li _num=<<:k>> class="small <<:epClass(ep[k])>>"><<:k>></li>
+								<</if>>
+							<<~}>>
+							<<if count.all - count.done > 7>>
+								<li _num=<<:k>> class="more">更晚</li>
+							<</if>>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="stat">
+				<span class="all" title="总集数"><<:count.all>></span>
+				<span class="air" title="已放映"><<:count.air>></span>
+				<span class="done" title="已看过"><<:count.done>></span>
+			</div>
+		</div>
+	</div>
+</script>
+
+</body>
+</html>

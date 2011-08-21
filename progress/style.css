@@ -1,0 +1,322 @@
+.epbox li.unair {
+	background-color:#EEE;
+}
+.epbox li.air {
+	background-color:#bcdeff;
+}
+.epbox li.done {
+	background-color:#abcdef;
+}
+
+.bgm {
+	height:150px;
+	width:250px;
+	overflow:hidden;
+	margin:8px 5px;
+	border:1px solid rgba(200,200,200,0.5);
+	padding:2px;
+	float:left;
+}
+.bgm h3 a {
+	display:inline-block;
+	font-size:18px;
+	width:245px;
+	overflow:hidden;
+	height:1.5em;
+	line-height:1.5em;
+	word-break:break-all;
+	padding-left:5px;
+	margin-bottom:2px;
+	background:rgba(200,200,200,0.5);
+}
+.bgm .thumb {
+	float:left;
+	height:120px;
+	width:100px;
+	background:#abcedf;
+}
+.bgm .thumb img {
+	max-height:120px;
+	max-width:100px;
+}
+.bgm .panel {
+	height:120px;
+	float:right;
+	width:145px;
+	margin-right:2px;
+}
+.bgm .panel .progress {
+	border-radius:8px;
+	border:1px solid silver;
+	height:90px;
+	width:100%;
+	position:relative;
+}
+
+.bgm .panel .progress>div {
+	border-radius:8px;
+	height:90px;
+	float:left;	
+}
+.bgm .panel .progress .past {
+	position:absolute;
+	left:0;
+	width:38px;
+	background:rgba(0,168,255,1);
+	z-index:1;
+}
+.bgm .panel .progress .future {
+	position:absolute;
+	right:0;
+	width:38px;
+	background:rgba(164,164,164,1);
+	z-index:0;
+}
+.bgm .panel .progress .now {
+	position:absolute;
+	left:15px;
+	border-radius:25px;
+	border:1px solid silver;
+	width:120px;
+	background:white;
+	position:relative;
+	z-index:10;
+	margin:-1px;
+}
+
+.bgm .panel .progress .epbox {
+	padding:3px 0;
+	width:120px;
+	float:left;
+	display:none;
+}
+.bgm .panel .progress .past:hover .epbox,.panel .progress .future:hover .epbox {
+	display:block;
+}
+.bgm .panel .progress .future .epbox {
+	width:90px;
+	float:right;
+}
+.bgm .panel .progress .epbox li {
+	float:left;
+	border:1px solid rgba(255,255,255,0.5);
+	margin:-1px;
+	padding:5px 4px;
+	font-size:16px;
+	width:20px;
+	cursor:pointer;
+	height:18px;
+}
+.bgm .panel .progress .epbox li.small {
+	padding:5px 1px;
+	width:26px;
+	font-size:9px;
+}
+
+.bgm .panel .progress .future .epbox li {
+	border-color:rgba(128,128,128,0.5);
+}
+.bgm .panel .progress .epbox li:hover {
+	background-color: rgba(255,255,255,0.5);
+}
+
+.bgm .panel .progress .epbox li.more {
+	width:48px;/* 2*20 + 2*4 */
+	text-align:center;
+	font-size:14px;
+}
+
+.bgm .panel .epinfo {
+	text-align:center;
+}
+
+.bgm .panel .epinfo .title {
+	display:block;
+	font-size:24px;
+	width:3em;
+	height:1.2em;
+	padding-top:10px;
+	line-height:1.2em;
+	overflow:hidden;
+	margin:0 auto;
+}
+.panel .epinfo .button {
+	margin-top:5px;
+	line-height:16px;
+	font-size:16px;
+	height:17px;
+	min-width:55px;
+}
+
+.panel .epinfo .done-button {
+	background-color:#0A63BC;
+}
+.panel .epinfo .air-button {
+	background-color:#91bd09;
+}
+.panel .epinfo .unair-button {
+	font-size:12px !important;
+	background-color:#808080;
+}
+
+.panel .epinfo .air-button:hover {
+	-webkit-animation-name: greenPulse;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+}
+.panel .epinfo .discuss {
+	background:url(images/discuss.png) no-repeat center center;
+	width:16px;
+	height:16px;
+	padding:5px;
+	margin:-5px;
+	display:inline-block;
+}
+.panel .epinfo .discuss:hover {
+	background-image:url(images/discuss.hover.png)
+}
+
+.stat {
+	padding-top:5px;
+}
+.stat>span {
+	margin:0 3px;
+	padding-left:18px;
+	line-height:24px;
+	font-size:16px;
+	background-repeat:no-repeat;
+	cursor:default;
+}
+.stat>span:hover {
+	background-color:rgba(228,228,228,0.3);
+}
+
+.stat .all {
+	background-image:url(images/all.png);
+}
+.stat .air {
+	background-image:url(images/air.png);
+}
+.stat .done {
+	background-image:url(images/done.png);
+}
+
+
+.button { background: #222 url(images/overlay-button.png) repeat-x 0 0; display: inline-block; padding: 5px 15px 6px; color: #fff !important; font-size: 13px; font-weight: bold; line-height: 1; text-decoration: none; -moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.25); -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.25); text-shadow: 0 -1px 1px rgba(0,0,0,0.25); border-bottom: 1px solid rgba(0,0,0,0.25); position: relative; cursor: pointer; overflow: visible; width: auto; }
+.button:hover { background-color: #111; color: #fff; }
+.button:active { -webkit-transform: translateY(1px); -moz-transform: translateY(1px); }
+
+@-webkit-keyframes greenPulse {
+	from { background-color: #91bd09; -webkit-box-shadow:: 0 0 9px #333; }
+	50% { background-color: #AEE30D; -webkit-box-shadow:: 0 0 18px #AEE30D; }
+	to { background-color: #91bd09; -webkit-box-shadow:: 0 0 9px #333; }
+}
+
+.one {
+	border:1px solid rgba(200,200,200,0.5);
+	border-radius:4px;
+	padding:2px;
+	position:relative;
+	width:400px;
+	margin:35px auto 0;
+}
+.one .thumb {
+	position:absolute;
+	top:-24px;
+	right:-24px;
+	overflow:hidden;
+}
+.one .thumb img {
+	border:1px solid rgba(200,200,200,0.8);
+	border-radius:10px;
+}
+.one h2 a {
+	display:inline-block;
+	padding:2px;
+	font-size:18px;
+	background:rgba(200,200,200,0.5);
+	width:396px;
+}
+
+.one .epframe {
+	width:349px;
+	padding:4px 25px;
+	position:relative;
+	height:30px;
+}
+.one .epframe .mask {
+	overflow:hidden;
+	width:349px;
+	position:relative;
+	height:30px;
+}
+.one .epframe .next,.one .epframe .prev {
+	background:url(images/next.png) center center no-repeat;
+	opacity:0.3;
+	width:25px;height:32px;
+	position:absolute;
+	top:4px;right:0;
+}
+.one .epframe .prev {
+	background:url(images/prev.png) center center no-repeat;
+	left:0;right:auto;
+}
+.one .epframe .next.hover, .one .epframe .prev.hover{
+	opacity:1;
+}
+
+.one .epbox {
+	width:100000px;
+	position:absolute;
+}
+.one .epbox li {
+	float:left;
+	border:1px solid rgba(127,127,127,0.5);
+	margin-left:-1px;
+	padding:5px 0;
+	text-align:center;
+	font-size:16px;
+	width:28px;
+	cursor:pointer;
+	height:18px;
+}
+.one .epbox li.current {
+	font-weight:bold;
+}
+
+.one .epbox li.small {
+	font-size:9px;
+}
+
+.one .content {
+	width:400px;
+}
+.one .content h3 {
+	width:300px;
+	padding:2px;
+	font-size:14px;
+	overflow:hidden;
+	border-bottom:1px solid #abcdef;
+}
+.one .content .tip {
+	float:left;
+}
+.one .content .panel {
+	float:right;
+}
+
+.one .back {
+	padding:2px 5px 2px 24px;
+	border:1px solid rgba(127, 127, 127, 0.5);
+	height:18px;
+	line-height:18px;
+	font-size:16px;
+	cursor:pointer;
+	position:absolute;
+	top:-26px;left:0;
+}
+
+.one .back img {
+	position:absolute;
+	left:4px;top:4px;
+}

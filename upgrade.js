@@ -84,5 +84,16 @@ checkVer(function(oldV, newV) {
 		BG.util.deskPop('版本升级成功，增加了<a href="http://bangumi.tv/group/topic/6304">RT功能</a>，去看看吧');
 		S.verno = 18;
 	}
+	if(oldV<19) {
+		BG.util.deskPop('版本升级成功，增加了<a href="http://bangumi.tv/group/t	opic/8245">进度管理</a>，去看看吧');
+		S.verno = 19;
+		
+		var NAV = BG.navdrag.slot.read("pop");
+		NAV[1].push({
+			href:'/progress/index.html',
+			text:'进度管理'
+		})
+		BG.navdrag.slot.write("pop", NAV);
+	}
 });
 
