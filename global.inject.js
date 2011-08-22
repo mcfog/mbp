@@ -380,7 +380,10 @@
 					if(request.do == 'injectAjax') {
 						var opt = $.extend({}, request.options, {
 							success:function() {
-								sendResponse(Array.prototype.slice.call(arguments));
+								sendResponse({status:'success',args:Array.prototype.slice.call(arguments)});
+							},
+							error:function() {
+								sendResponse({status:'error',args:Array.prototype.slice.call(arguments)});
 							}
 						});
 						$.ajax(opt);

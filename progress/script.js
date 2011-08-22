@@ -139,6 +139,13 @@ $(function() {
 	{
 		var $this = $(this), id = $this.closest('*[subject_id]').attr('subject_id'),
 			num = $this.closest('*[_num]').attr('_num'), epid = PRG[id].ep[num].id;
+
+		var retry = function() {
+			return retry.arguments.callee.apply(retry.this, retry.arguments);
+		};
+		retry.arguments = arguments
+		retry.this = this;
+		
 		$this.removeClass('air-button');
 		EXT.sendRequest({
 			do:'injectAjax',
@@ -148,12 +155,17 @@ $(function() {
 				headers:{'Content-Type':'application/xml'}
 			}
 		}, function(res) {
-			PRG[id].ep[num].done = true;
-			PRG[id].count.done += 1;
-			renderAll();
-			BG.cacheGet.reset(S.domain);
-			BG.cacheGet(S.domain, false, {force:true});
-			$(document.body).trigger('mbp-done', [epid]);
+			if('success' == res.status) {
+				PRG[id].ep[num].done = true;
+				PRG[id].count.done += 1;
+				console.log(PRG[id]);
+				BG.cacheGet.reset(S.domain);
+				BG.cacheGet(S.domain, false, {force:true});
+				renderAll();
+				$(document.body).trigger('mbp-done', [epid]);
+			} else {
+				setTimeout(retry, 2000);
+			}
 		});
 	}).delegate('.epinfo .discuss', 'click', function()
 	{
