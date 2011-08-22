@@ -18,6 +18,7 @@ $(function() {
 				var id = $a.attr('subject_id');
 				var prg = PRG[id] = {
 					ep:{},
+					maxNum:0,
 					id:id,
 					title:$a.attr('title'),
 					count:{all:0,done:0,air:0},
@@ -27,9 +28,11 @@ $(function() {
 				{
 					var $this = $(this), epid = parseInt($this.attr('id').split('_')[1]),
 						onair = true,done = false, 
-						$prg=$hp.find('#prginfo_'+epid);
+						$prg=$hp.find('#prginfo_'+epid),
+						num = parseInt($this.text(),10);
 
 					prg.count.all++;
+					prg.maxNum = Math.max(prg.maxNum, num);
 					if($this.is('.epBtnWatched')) {
 						prg.count.done++;
 						done = true;
@@ -44,7 +47,7 @@ $(function() {
 					if(airDate) airDate = airDate[1];
 					//else console.log($prg.find('.tip').html());
 
-					prg.ep[parseInt($this.text(),10)] = {
+					prg.ep[num] = {
 						id:epid,
 						title:$this.attr('title'),
 						onair:onair,
@@ -139,6 +142,13 @@ $(function() {
 	{
 		var $this = $(this), id = $this.closest('*[subject_id]').attr('subject_id'),
 			num = $this.closest('*[_num]').attr('_num'), epid = PRG[id].ep[num].id;
+
+		var retry = function() {
+			return retry.arguments.callee.apply(retry.this, retry.arguments);
+		};
+		retry.arguments = arguments
+		retry.this = this;
+		
 		$this.removeClass('air-button');
 		EXT.sendRequest({
 			do:'injectAjax',
@@ -148,12 +158,17 @@ $(function() {
 				headers:{'Content-Type':'application/xml'}
 			}
 		}, function(res) {
-			PRG[id].ep[num].done = true;
-			PRG[id].count.done += 1;
-			renderAll();
-			BG.cacheGet.reset(S.domain);
-			BG.cacheGet(S.domain, false, {force:true});
-			$(document.body).trigger('mbp-done', [epid]);
+			if('success' == res.status) {
+				PRG[id].ep[num].done = true;
+				PRG[id].count.done += 1;
+				console.log(PRG[id]);
+				BG.cacheGet.reset(S.domain);
+				BG.cacheGet(S.domain, false, {force:true});
+				renderAll();
+				$(document.body).trigger('mbp-done', [epid]);
+			} else {
+				setTimeout(retry, 2000);
+			}
 		});
 	}).delegate('.epinfo .discuss', 'click', function()
 	{

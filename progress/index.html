@@ -121,10 +121,8 @@
 				<div class="past<<:nowNum==1?' hide':''>>">
 					<div class="hide">
 						<ul class="epbox">
-							<<if nowNum > 11>>
-								<li _num=<<:nowNum-11>> class="more">更早</li>
-							<</if>>
-							<<~for(var k=nowNum-10;k<nowNum;k++) {if(k<=0)continue;>>
+							<<~var temp_htm = htm;htm = [];temp2_htm = [];
+								var k=nowNum,c=0;while(ep[k-=1]) {c+=1;if(c>10) break;>>
 								<<if k<10>>
 									<li _num=<<:k>> class="<<:epClass(ep[k])>>">0<<:k>></li>
 								<<elif k<100>>
@@ -132,7 +130,11 @@
 								<<else>>
 									<li _num=<<:k>> class="small <<:epClass(ep[k])>>"><<:k>></li>
 								<</if>>
-							<<~}>>
+							<<~temp2_htm = htm.concat(temp2_htm);htm=[];};>>
+							<<if c > 10>>
+								<li _num=<<:nowNum-11>> class="more">更早</li>
+							<</if>>
+							<<~htm = temp_htm.concat(htm.concat(temp2_htm));>>
 						</ul>
 					</div>
 				</div>
@@ -159,10 +161,10 @@
 					<</if>>
 					</div>
 				</div>
-				<div class="future<<:nowNum==count.all?' hide':''>>">					
+				<div class="future<<:nowNum==count.all?' hide':''>>">
 					<div class="hide">
 						<ul class="epbox">
-							<<~for(var k=nowNum;k<=count.done+6;k++) {if(!ep[k]) continue;>>
+							<<~var k = nowNum,c=0;while(ep[k+=1]) {c+=1;if(c>6) break;>>
 								<<if k<10>>
 									<li _num=<<:k>> class="<<:epClass(ep[k])>>">0<<:k>></li>
 								<<elif k<100>>
@@ -171,7 +173,7 @@
 									<li _num=<<:k>> class="small <<:epClass(ep[k])>>"><<:k>></li>
 								<</if>>
 							<<~}>>
-							<<if count.all - count.done > 7>>
+							<<if c>6>>
 								<li _num=<<:k>> class="more">更晚</li>
 							<</if>>
 						</ul>

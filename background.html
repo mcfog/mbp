@@ -296,8 +296,10 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 				me.expire[url] = Math.max(me.expire[url], Date.now() + 45 * 1000);
 
 				for(var k in $$.listeners[url]) $$.listeners[url][k].apply(this, args);
-				me.dfd[url].resolve(args);
-				delete me.dfd[url];
+				if(me.dfd[url]) {
+					me.dfd[url].resolve(args);
+					delete me.dfd[url];
+				}
 			}
 			$$._me=me;
 			
