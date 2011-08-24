@@ -91,7 +91,7 @@ var fn_fade = function($r) {
 		if(title.length > 20) title = "(共"+title.length+"字)"+title.substr(0, 10)+"...";
 		
 		var $d = $('<div>').append(
-			$r.find('a[href^=/user/]:not(.avatar):first').clone()
+			$r.find('a[href^="/user/"]:not(.avatar):first').clone()
 		).append(
 			$('<span>').html(msg.html()).prepend($r.find('strong.userName').clone())
 		).append(
