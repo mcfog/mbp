@@ -15,7 +15,12 @@
 			}, function() {
 				window.over = setTimeout(function() {
 					window.close();
-				}, to);				
+				}, to);
+			});
+			
+			$(window).bind('unload', function()
+			{
+				delete BG.util.deskPop.lock;
 			});
 			
 			if(S.ukagakaShell) (function() {

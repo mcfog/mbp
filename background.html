@@ -78,7 +78,10 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 				
 				BG.log('桌面提醒：<div class="bili">'+htm+"</div>");
 
-				webkitNotifications.createHTMLNotification(U('bilibili.html')).show();
+				if(!arguments.callee.lock) {
+					arguments.callee.lock = 1;
+					webkitNotifications.createHTMLNotification(U('bilibili.html')).show();
+				}
 			}
 		}
 		bgm.util.badge.get = function() {
