@@ -18,12 +18,6 @@
 <script type="text/x-sjtp" id="tmpl_one">
 	<<~setTimeout(function() {
 		var $$ = function() {return $container.find.apply($container, arguments)};
-//		$(document.body).click(function(event) {
-//			if(!$(event.target).is('#container *')) {
-//				$(document.body).unbind('click', arguments.callee);
-//				setTimeout(renderAll);
-//			}
-//		});
 		$$('.back').click(renderAll);
 		$$('.epbox li[_num='+nowNum+']').addClass('current');
 		$$('.epbox').css('left', nowNum < 5 ? 0 : -29*(Math.min(count.all - 12, nowNum-5)));
@@ -83,7 +77,12 @@
 	<h3><<:ep.title>></h3>
 	<div class="epinfo">
 		<div class="tip">
-			<<:ep.$tip.find('hr').remove().end().html()>>
+			<<:ep.$tip.find('hr').remove().end().find('a[href]').each(function() {
+				$(this).attr({
+					href: S.domain+$(this).attr('href'),
+					target: '_blank'
+				});
+			}).end().html()>>
 		</div>
 		<div class="fr" subject_id=<<:id>> _num=<<:num>>>
 			<<if ep.done>>
