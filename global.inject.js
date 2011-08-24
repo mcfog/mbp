@@ -36,7 +36,7 @@
 			//光头
 			if(ext_opt('guangtou')) (function() {
 				//if(location.href.match(/\/user\/[^\/]+$/)) return;
-				var sel = 'a[href^=/user/],a[href^=http://bangumi.tv/user/],a[href^=http://bgm.tv/user/],a[href^=http://chii.in/user/]'
+				var sel = 'a[href^="/user/"],a[href^="http://bangumi.tv/user/"],a[href^="http://bgm.tv/user/"],a[href^="http://chii.in/user/"]'
 
 			 	$(document).delegate(sel, 'mouseenter', function() {
 			 		if($('._daguangtou').size()>0) return;
@@ -76,15 +76,15 @@
 				 			$gtou.find('.loading').text('[Ｘ]').click(fn_close);
 				 			var $h = $(htm);
 				 			var $info = $('<div>').addClass("cb");
-				 			var idn = /\/(\d+)\.chii/.exec($h.find('a[href^=/pm/compose]').attr('href'))[1]
+				 			var idn = /\/(\d+)\.chii/.exec($h.find('a[href^="/pm/compose"]').attr('href'))[1]
 				 			
 				 			//收藏
 				 			var $fav = $('<div>').addClass("cb");
 				 			var t = {'anime':'动画','game':'游戏','book':'图书','music':'音乐'}
 				 			for(var k in t) {
 				 				var $t = $h.find('#'+k);
-				 				var doing = parseInt($t.find('li a[href$=/do]').text()) || 0;
-				 				var done =  parseInt($t.find('li a[href$=/collect]').text()) || 0;
+				 				var doing = parseInt($t.find('li a[href$="/do"]').text()) || 0;
+				 				var done =  parseInt($t.find('li a[href$="/collect"]').text()) || 0;
 				 				$fav.append($('<a>')
 				 					.text(t[k]+"("+doing+"/"+done+")")
 				 					.attr({
@@ -104,7 +104,7 @@
 				 				.text($h.find('.userSynchronize .hot').text().substr(2)+'('+perc+')')
 								.css({background:"rgba(255,0,0,"+parseFloat(perc)/100+")",padding:'4px'})
 				 			);
-				 			if($h.find('a[href^=/connect/]').size()>0) {
+				 			if($h.find('a[href^="/connect/"]').size()>0) {
 				 				$syn.append($('<a>').html('<span>尾行</span>').css({float:"right"}).addClass('chiiBtn').attr({href:'/connect/'+idn}))
 				 			} else {
 				 				$syn.append($('<a>').html($('<span>已尾行</span>').css({backgroundPosition:"100% -22px",color:'orange',fontWeight:'bold'})).css({float:"right",background:"url(/img/btn_bg.png) 0 -22px no-repeat"}).addClass('chiiBtn').attr({target:'_blank'}))
@@ -160,7 +160,7 @@
 				$('style._betterNav').remove();
 				var NAV = ext_opt('navbar_slot');
 				if(!NAV) return $('#nav_menu>li:first').remove();
-				var userid = $('#menu a.nav[href^=/anime/list/]:first').attr('href').match(/\/anime\/list\/(.+?)\/./);
+				var userid = $('#menu a.nav[href^="/anime/list/"]:first').attr('href').match(/\/anime\/list\/(.+?)\/./);
 				if(!userid) {
 					return setTimeout(arguments.callee, 1000);
 				} else {
@@ -240,7 +240,7 @@
 							var next = function() {
 								$(document).dequeue('synchronous');
 							}
-							var href = $ctn.find('a[href^=/user]').attr('href');
+							var href = $ctn.find('a[href^="/user"]').attr('href');
 							$ctn.append('<span class="loading">Loading...</span>');
 							$.get(href, function(html) {
 								$ctn.find('span.loading').remove();

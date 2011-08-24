@@ -81,8 +81,8 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 				if(arguments.callee.ntf) {
 					arguments.callee.ntf.cancel();
 				}
-				arguments.callee.ntf = ebkitNotifications.createHTMLNotification(U('bilibili.html'));
-				arguments.callee.show();
+				arguments.callee.ntf = webkitNotifications.createHTMLNotification(U('bilibili.html'));
+				arguments.callee.ntf.show();
 			}
 		}
 		bgm.util.badge.get = function() {
@@ -156,7 +156,7 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 			var a = util.badge.get();
 			util.badge(">_<", "yellow");
 			$.post(S.domain+'/update/user/say', {say_input:word}, function(r) {
-				if($(r).find('a[href*=/logout/]').size() > 0) {
+				if($(r).find('a[href*="/logout/"]').size() > 0) {
 					util.deskPop("您的吐槽B娘已收到");
 				} else {
 					util.deskPop("唔……您的吐槽没有被接受（请检查您是否用<b>扩展中设定的域名</b>登录了Bangumi）");
@@ -178,7 +178,7 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 				setting.nickname = new_nick;
 				util.badge(">_<", "yellow");
 				$.post(host+'/settings', setting, function(r) {					
-					if($(r).find('a[href*=/logout/]').size() > 0) {
+					if($(r).find('a[href*="/logout/"]').size() > 0) {
 						util.deskPop("您的新昵称B娘已经认真地记住了");
 					} else {
 						util.deskPop("唔……您的新昵称没有被接受（请检查您是否用<b>扩展中设定的域名</b>登录了Bangumi）");
