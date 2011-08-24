@@ -66,7 +66,7 @@
 					else $frm.attr('src', "service.html");
 				} else {
 					$frm.attr('src', dp);
-					$('a[href='+dp+']').closest('li').addClass('focus');
+					$('a').filter(function(){return ($(this).attr('href')||'').indexOf(dp)!=-1;}).closest('li').addClass('focus');
 				}
 			}
 			
