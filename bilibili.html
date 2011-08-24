@@ -18,11 +18,6 @@
 				}, to);
 			});
 			
-			$(window).bind('unload', function()
-			{
-				delete BG.util.deskPop.lock;
-			});
-			
 			if(S.ukagakaShell) (function() {
 				var t = JSON.tryParse(S.ukagakaShell);
 				if(t && t.bg) $('.bili img').attr('src', t.bg);
