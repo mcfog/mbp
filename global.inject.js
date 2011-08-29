@@ -160,7 +160,11 @@
 				$('style._betterNav').remove();
 				var NAV = ext_opt('navbar_slot');
 				if(!NAV) return $('#nav_menu>li:first').remove();
-				var userid = $('#menu a.nav[href^="/anime/list/"]:first').attr('href').match(/\/anime\/list\/(.+?)\/./);
+
+				var userid = $('#menu a.nav[href^="/anime/list/"]:first').attr('href');
+				if(!userid) return;
+				userid = userid.match(/\/anime\/list\/(.+?)\/./);
+
 				if(!userid) {
 					return setTimeout(arguments.callee, 1000);
 				} else {
@@ -329,11 +333,13 @@
 				CONN.postMessage({ac:'bg:checkNotify', pathname:location.pathname});
 			}
 
-			//shout index
+			//shout
 			$(function() {
-				if(/^\/?$/.test(location.pathname)) {
-					CONN.postMessage({ac:'bg:shoutIndex', html:document.documentElement.outerHTML});
-				}
+				EXT.sendRequest({do:'evalBG',what:'function(){return cacheGet.isListening("'+location.href+'")}'}, function(res)
+				{
+					if(!res) return;
+					CONN.postMessage({ac:'bg:shout', url:location.href, html:document.documentElement.outerHTML});
+				});
 			});
 			
 			//RT button

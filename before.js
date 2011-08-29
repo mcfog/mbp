@@ -2,14 +2,14 @@ chrome.extension.sendRequest({
 	do: "getOptions"
 }, function (S) {	
 	var c_eval = function(source) {
-	  if ('function' == typeof source) {
-	    source = '(' + source + ')();'
-	  }
-	  var script = document.createElement('script');
-	  script.setAttribute("type", "application/javascript");
-	  script.textContent = source;
-	  document.body.appendChild(script);
-	  document.body.removeChild(script);
+		if ('function' == typeof source) {
+			source = '(' + source + ')();'
+		}
+		var script = document.createElement('script');
+		script.setAttribute("type", "application/javascript");
+		script.textContent = source;
+		document.body.appendChild(script);
+		document.body.removeChild(script);
 	}
 
 	//自动跳转

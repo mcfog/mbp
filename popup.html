@@ -22,7 +22,6 @@
 			var $frm = $('iframe[name=content]');
 			
 			$(window).bind('unload', function() {
-				//BG.tick(15000);
 				S['last_iframe_src'] = $frm.contents()[0].location.href;
 			});
 			

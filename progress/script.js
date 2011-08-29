@@ -8,7 +8,7 @@ $(function() {
 	}
 	window.renderAll = function() {
 		$('#container').render($('#tmpl_loading'), {});
-		BG.cacheGet(S.domain, function(o)
+		BG.cacheGet(S.domain + '/', function(o)
 		{
 			var $hp = BG.$(o);
 			$('#container').empty();
