@@ -162,8 +162,8 @@ $(function() {
 				PRG[id].ep[num].done = true;
 				PRG[id].count.done += 1;
 				console.log(PRG[id]);
-				BG.cacheGet.reset(S.domain);
-				BG.cacheGet(S.domain, false, {force:true});
+				BG.cacheGet.reset(S.domain + '/');
+				BG.cacheGet(S.domain + '/', false, {force:true});
 				renderAll();
 				$(document.body).trigger('mbp-done', [epid]);
 			} else {
