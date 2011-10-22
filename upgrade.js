@@ -95,5 +95,9 @@ checkVer(function(oldV, newV) {
 		})
 		BG.navdrag.slot.write("pop", NAV);
 	}
+	
+	if(oldV<20) {
+		S.removeItem('noTL');
+	}
 });
 

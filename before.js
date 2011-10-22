@@ -15,20 +15,6 @@ chrome.extension.sendRequest({
 	//自动跳转
 	if(S['domainAutoJump'] && location.origin != S['domain']) location = S['domain'] + location.pathname + location.search + location.hash;
 	
-	
-	if(S.noTL && location.pathname == '/') setTimeout(function() {
-		if(document.readyState!='uninitialized' && $('body').html()) {
-			$('body').prepend('<style>#timelineTabs,#columnTimelineInnerWrapper{display:none}</style>');
-			$(function() {
-				$('#header').append($('&nbsp;<a href="javascript:;">时空管理局</a>').one('click', function() {
-					$(this).remove();
-					$('#timelineTabs,#columnTimelineInnerWrapper').show();
-				}))
-			})
-		} else {
-			setTimeout(arguments.callee, 10);
-		}
-	});
 	if(S.noCalendar && location.pathname == '/') setTimeout(function() {
 		if(document.readyState!='uninitialized' && $('body').html()) {
 			$('body').prepend('<style>.calendarMini{display:none}</style>');
