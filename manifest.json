@@ -1,7 +1,7 @@
 {
 	"name"				: "Mcfog's Bangumi Plugin",
-	"version"			: "1.4.824.2256",
-	"verno"				: "19",
+	"version"			: "1.4.1023.304",
+	"verno"				: "20",
 	"description"		: "McFog的B娘调教成果合集,神奇功效满载，魔法少女必备",
 	"icons": {
 	  "128": "images/icon.png"

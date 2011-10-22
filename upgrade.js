@@ -98,6 +98,8 @@ checkVer(function(oldV, newV) {
 	
 	if(oldV<20) {
 		S.removeItem('noTL');
+		BG.util.deskPop('版本升级成功，增加了<a href="http://bgm.tv/group/topic/9850">谷娘搜索</a>，去看看吧');
+		S.verno = 20;
 	}
 });
 

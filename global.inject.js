@@ -439,15 +439,15 @@
 				{
 					$.attr(document.body, "data-tmpl_cse_search_result", tpl);
 					c_eval(function() {
-						var inited = false;
+						var _inited = false, _hash = null;
 						window.mbp.cse = {
-							result: function(o) {
+ 							result: function(o) {
 								console.warn(o);
 								$('.columns:first').render($.attr(document.body, "data-tmpl_cse_search_result"), o.responseData);
 							},
 							tag: null,
 							search: function(q) {
-								if(!inited) {
+								if(!_inited) {
 									var $n = $('#nav');
 									$n.siblings().remove()
 									$n.after('<div class="columns">')
@@ -455,7 +455,7 @@
 										;
 									$(document.head).find('title').html('MBP CSE Search');
 									$('#search_text').val(q);
-									inited=true;
+									_inited=true;
 								};
 
 								hash = {q:q};
@@ -463,11 +463,21 @@
 									q += ' more:'+window.mbp.cse.tag;
 									hash.tag=window.mbp.cse.tag;
 								}
-								window.location.hash = JSON.stringify(hash);								
+								location.hash = _hash = JSON.stringify(hash);
 
 								$('<script src="http://www.google.com/uds/GwebSearch?callback=mbp.cse.result&rsz=filtered_cse&hl=zh_CN&cx=008561732579436191137:pumvqkbpt6w&v=1.0&'+$.param({q:q,_:Date.now()})+'" />')
 									.appendTo(document.head).remove();
 								$('.columns:first').html('少女祈祷中…');
+							},
+							hashchange: function() {
+								var hash = window.location.hash.substr(1);
+								if(hash != _hash) {
+									_hash = hash;
+									var o = JSON.parse(hash);
+									if(!o) return;
+									if(o.tag) window.mbp.cse.tag = o.tag;
+									if('string' == typeof o.q) window.mbp.cse.search(o.q);
+								}
 							},
 							switch_tag: function(tag) {
 								window.mbp.cse.tag = $(tag).attr('data-tag');
@@ -497,12 +507,13 @@
 				
 				if(location.pathname == '/group/cse_search' && location.hash.length > 1) {
 					c_eval('('+(function() {
-						var o = JSON.parse('__HASH__');
 						setTimeout(function() {
 							var me = arguments.callee;
 							if(!window.mbp || !window.mbp.cse) return setTimeout(function() {me.call()}, 500);
-							if(o.tag) window.mbp.cse.tag = o.tag;
-							if('string' == typeof o.q) window.mbp.cse.search(o.q);
+							$(window).bind('hashchange', function() {
+								return window.mbp.cse.hashchange();
+							});
+							window.mbp.cse.hashchange();
 						});
 					}+')()').replace('__HASH__', location.hash.substr(1)));
 				}
