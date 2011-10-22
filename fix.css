@@ -60,19 +60,6 @@ ul#infobox li {word-break: break-all;}
 	position:relative;
 }
 
-/*覆盖层*
-body {
-	overflow:hidden;	
-}
-._overlay {
-	position:absolute;
-	left:-20000px;top:-20000px;
-	width:100000px; height:100000px;
-	z-index:65535;
-	background:white;
-	opacity:0.9;
-}
-
 /*人物系统 列表超长*/
 ul.browserList>li._more {
 	line-height:30px;
@@ -153,4 +140,14 @@ ul.browserList>li._more:hover {
 	cursor:pointer;
 }
 
+/*头部搜索*/
+._header_search_select {
+	position: absolute;
+	z-index:100;
+	background-color:rgba(255,255,255,0.8);
+	width:66px;
+}
+._header_search_select option:first-child {
+	background:white;
+}
 /*EOF*/

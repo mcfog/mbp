@@ -355,7 +355,7 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 					return sendResponse(1);
 				}
 				if(request.do == 'evalBG') {
-					//console.log(request.what);
+					console.info(request.what);
 					var fn = eval('('+request.what+')');
 					return sendResponse(fn(window));
 				}

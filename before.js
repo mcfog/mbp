@@ -11,6 +11,16 @@ chrome.extension.sendRequest({
 		document.body.appendChild(script);
 		document.body.removeChild(script);
 	}
+	
+	var wait_body = function(cb) {
+		setTimeout(function() {
+			if(document.readyState!='uninitialized' && $(document.body).html()) {
+				cb();
+			} else {
+				setTimeout(arguments.callee, 10);
+			}
+		});
+	};
 
 	//自动跳转
 	if(S['domainAutoJump'] && location.origin != S['domain']) location = S['domain'] + location.pathname + location.search + location.hash;
@@ -81,5 +91,4 @@ chrome.extension.sendRequest({
 			setTimeout(arguments.callee, 50);
 		}
 	});
-
 });

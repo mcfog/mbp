@@ -21,9 +21,14 @@
 				if(!is_extension) return d;
 				return S[k];
 			}
+
 			/********************************************************
 			 *Main Code here
 			 ********************************************************/			 
+			c_eval(function() {
+				window.mbp = {};
+			});
+
 			//禁用电波
 			if(ext_opt('disableNotify')) c_eval(function() {
 				window.pushNotify = function() {};
@@ -245,7 +250,7 @@
 								$(document).dequeue('synchronous');
 							}
 							var href = $ctn.find('a[href^="/user"]').attr('href');
-							$ctn.append('<span class="loading">Loading...</span>');
+							$ctn.append('<span class="loading">少女祈祷中…</span>');
 							$.get(href, function(html) {
 								$ctn.find('span.loading').remove();
 								var $html = $(html);
@@ -397,6 +402,111 @@
 				});
 
 			})
+
+			//cse search
+			$(function() {
+				$('<script src="'+chrome.extension.getURL('include/jquery.sjtp.min.js')+'" />').appendTo(document.head)
+
+				var $s0 = $('#siteSearchSelect');
+				$s0.prepend('<option value="google">谷娘</option>').val('google');
+				$s0.closest('form').submit(function() {
+					if($s0.val()=='google') {
+						var q = $('#search_text').val();
+						if(location.pathname != '/group/cse_search') {
+							location = '/group/cse_search#'+JSON.stringify({q:q});
+							return false;
+						};
+						c_eval('('+(''+function() {
+							window.mbp.cse.search('__Q__');
+						}).replace('__Q__', q.replace(/'/g, "\\'"))+')()');
+						return false;
+					}
+				})
+				//get tpl, set callback
+				EXT.sendRequest({do:'evalBG',what:function() {
+					//inside bg
+					if(BG.tmpl_cse_result) return BG.tmpl_cse_result;
+					$.ajax({
+						url:EXT.getURL('include/google_cse_result.tpl.html'),
+						async:false,//!!sync request
+						dataType:'text',
+						success:function(t) {
+							BG.tmpl_cse_result = t;
+						}
+					});
+					return BG.tmpl_cse_result;
+				}+''}, function(tpl)
+				{
+					$.attr(document.body, "data-tmpl_cse_search_result", tpl);
+					c_eval(function() {
+						var inited = false;
+						window.mbp.cse = {
+							result: function(o) {
+								console.warn(o);
+								$('.columns:first').render($.attr(document.body, "data-tmpl_cse_search_result"), o.responseData);
+							},
+							tag: null,
+							search: function(q) {
+								if(!inited) {
+									var $n = $('#nav');
+									$n.siblings().remove()
+									$n.after('<div class="columns">')
+										.after('<div id="header" style="opacity:0.05"><h1><del>我是你爸，去卖火柴</del></h1></div>')
+										;
+									$(document.head).find('title').html('MBP CSE Search');
+									$('#search_text').val(q);
+									inited=true;
+								};
+
+								hash = {q:q};
+								if(window.mbp.cse.tag) {
+									q += ' more:'+window.mbp.cse.tag;
+									hash.tag=window.mbp.cse.tag;
+								}
+								window.location.hash = JSON.stringify(hash);								
+
+								$('<script src="http://www.google.com/uds/GwebSearch?callback=mbp.cse.result&rsz=filtered_cse&hl=zh_CN&cx=008561732579436191137:pumvqkbpt6w&v=1.0&'+$.param({q:q,_:Date.now()})+'" />')
+									.appendTo(document.head).remove();
+								$('.columns:first').html('少女祈祷中…');
+							},
+							switch_tag: function(tag) {
+								window.mbp.cse.tag = $(tag).attr('data-tag');
+								window.mbp.cse.search($('#search_text').val());
+							}
+						};
+					});
+				});
+
+				//adjust header search box
+				var $s = $s0.clone();
+				$s.addClass('_header_search_select')
+					.appendTo(document.body).hide()
+					.change(function() {
+						$s0.val($s.val());
+					})
+					.bind('click mouseleave', function() {
+						$s.fadeOut();
+					})
+					.prop('id', null);
+				$s[0].size = $s[0].length;
+				$s0.mouseenter(function() {
+					$s.css($s0.offset()).show();
+				}).change(function(){
+					$s.mouseleave();
+				});
+				
+				if(location.pathname == '/group/cse_search' && location.hash.length > 1) {
+					c_eval('('+(function() {
+						var o = JSON.parse('__HASH__');
+						setTimeout(function() {
+							var me = arguments.callee;
+							if(!window.mbp || !window.mbp.cse) return setTimeout(function() {me.call()}, 500);
+							if(o.tag) window.mbp.cse.tag = o.tag;
+							if('string' == typeof o.q) window.mbp.cse.search(o.q);
+						});
+					}+')()').replace('__HASH__', location.hash.substr(1)));
+				}
+			});//end of cse search
 
 			/********************************************************
 			 *Main Code End

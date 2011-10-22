@@ -1,0 +1,68 @@
+<<if results.length == 0>>
+	<div id="columnSubjectBrowserA" class="column cse_result"> 
+		<div class="clearit"> </div> 
+		<h1>不、不要搜那么奇怪的东西，变态！</h1>
+	</div>
+<<else>>
+<style type="text/css">
+	.cse_result .btnGray {
+		display: inline-block;
+		margin: 0 5px 5px 0;
+		padding: 2px 5px;
+		font-size: 12px;
+		color: #555;
+	}
+	.cse_result .btnGray:hover {
+		color: #FFF;
+	}
+	.cse_result small.url {
+		display:inline-block;
+		height:1.5em;
+		max-width:200px;
+		overflow:hidden;
+	}
+</style>
+<div id="columnSubjectBrowserA" class="column cse_result"> 
+	<div class="clearit"> </div> 
+	<ul id="browserItemList" class="browserFull">
+	<<loop results k res>>
+		<li class="item<<:k%2?' even':' odd'>> clearit">
+			<div class="ll">
+				<<if res.perResultLabels>><<loop res.perResultLabels lab>>
+					<a class="btnGray" data-tag="<<:lab.anchor>>" href="javascript:void(0)" onclick="mbp.cse.switch_tag(this)"><<:lab.label>></a>
+				<</loop>><</if>>
+			</div>
+			<div class="inner"> 
+				<h3> 
+					<a href="<<:res.url>>" class="l"><<:res.title>></a>
+					<small class="gray url">
+						<<:decodeURIComponent((res.url))>>
+					</small>
+				</h3>
+				<p class="info tip"><<:res.content>></p>
+				<a href="<<:res.cacheUrl>>" class="rr" target="_blank"><small>缓存君</small></a>
+			</div> 
+		</li>
+	<</loop>>
+	</ul>
+</div>
+
+<</if>>
+
+
+<div id="columnSubjectBrowserB" class="column">
+	<div class="SimpleSidePanel" style="width:190px;">
+		<h2>标签们</h2>
+		<ul id="userTagList" class="tagList">
+			<li>
+				<a data-tag="" href="javascript:void(0)" onclick="mbp.cse.switch_tag(this)" class="l">所有条目</a>
+			</li>
+			<<loop context.facets lab>>
+			<li>
+				<a data-tag="<<:lab.anchor>>" href="javascript:void(0)" onclick="mbp.cse.switch_tag(this)" class="l"><<:lab.label>></a>
+			</li>
+			<</loop>>
+		</ul>
+	</div>
+</div>
+
