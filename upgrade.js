@@ -101,5 +101,9 @@ checkVer(function(oldV, newV) {
 		BG.util.deskPop('版本升级成功，增加了<a href="http://bgm.tv/group/topic/9850">谷娘搜索</a>，去看看吧');
 		S.verno = 20;
 	}
+	if(oldV<21) {
+		S.csePos = "0"
+		S.verno = 21;
+	}
 });
 

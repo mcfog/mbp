@@ -408,7 +408,13 @@
 				$('<script src="'+chrome.extension.getURL('include/jquery.sjtp.min.js')+'" />').appendTo(document.head)
 
 				var $s0 = $('#siteSearchSelect');
-				$s0.prepend('<option value="google">谷娘</option>').val('google');
+				if(ext_opt('csePos')==0) {
+					$s0.prepend('<option value="google">谷娘</option>').val('google');
+				} else if(ext_opt('csePos') == -1) {
+					$s0.append('<option value="google">谷娘</option>');
+				} else {
+					$s0.find('option:first').after('<option value="google">谷娘</option>');
+				}
 				$s0.closest('form').submit(function() {
 					if($s0.val()=='google') {
 						var q = $('#search_text').val();
@@ -442,7 +448,6 @@
 						var _inited = false, _hash = null;
 						window.mbp.cse = {
  							result: function(o) {
-								console.warn(o);
 								$('.columns:first').render($.attr(document.body, "data-tmpl_cse_search_result"), o.responseData);
 							},
 							tag: null,

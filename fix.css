@@ -146,6 +146,7 @@ ul.browserList>li._more:hover {
 	z-index:100;
 	background-color:rgba(255,255,255,0.8);
 	width:66px;
+	font-size:14px;
 }
 ._header_search_select option:first-child {
 	background:white;

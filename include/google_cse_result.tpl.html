@@ -1,3 +1,8 @@
+<<~
+var mkUrl = function(url) {
+	return decodeURIComponent(url.replace(/bangumi\.tv|bgm\.tv|chii\.in/g, document.domain))
+}
+>>
 <<if results.length == 0>>
 	<div id="columnSubjectBrowserA" class="column cse_result"> 
 		<div class="clearit"> </div> 
@@ -34,9 +39,9 @@
 			</div>
 			<div class="inner"> 
 				<h3> 
-					<a href="<<:res.url>>" class="l"><<:res.title>></a>
+					<a href="<<:mkUrl(res.url)>>" class="l"><<:res.title>></a>
 					<small class="gray url">
-						<<:decodeURIComponent((res.url))>>
+						<<:decodeURIComponent(mkUrl(res.url))>>
 					</small>
 				</h3>
 				<p class="info tip"><<:res.content>></p>
