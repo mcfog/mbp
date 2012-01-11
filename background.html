@@ -400,11 +400,21 @@ a=o(a,d,e,f,c[b+12],6,1700485571);f=o(f,a,d,e,c[b+3],10,2399980690);e=o(e,f,a,d,
 						var suc = function(oldC, newC) {
 							if(!newC && bn) return BG.util.badge(newC===null ? "N/A" : "0", "blue");
 							if(bn) BG.util.badge(String(newC), "blue");
-							if(dn && (!oldC || newC > oldC)) BG.util.deskPop("<a href='/notify'>您有"+newC+"条新提醒</a>");
+							$item = $o.eq(0).clone();
+							$item.find('a.nt_link').one('click', function() {
+								var id = $(this).attr('class').split('_')[2];
+								BG.$.get('/erase/notify/'+id, {ajax:1}, function() {
+									BG.cacheGet(S.domain+"/notify", me, {force:true});
+								});
+							});
+							$item.find('a').attr('target', '_blank');
+							$item.find('.nt_del').remove();
+							if(dn && (!oldC || newC > oldC)) BG.util.deskPop("<a href='/notify'>您有"+newC+"条新提醒</a>"+$item.html());
 							if(!oldC || newC > oldC) tick.reset(6000);
 						}
 						var count = 0;
-						$(o).find('div.tml_item').each(function() {
+						var $o = $(o).find('div.tml_item');
+						$o.each(function() {
 							var s = parseInt($(this).find('.merge_count').text());
 							if(s>0) count+=s; else count++;
 						});
