@@ -36,7 +36,7 @@
 			
 		
 var judgeSpam = function($msg, $context) {
-	if($msg.find('img:not([src^=/])').size()>0) return 0;//外链图片，しろ!
+	if($msg.find('img:not([src^="/"])').size()>0) return 0;//外链图片，しろ!
 	
 	var trim = function(s) {return s.replace(/(^[\s]*)|([\s]*$)/g, "")}
 	var countSub = function(needle, haystack) {return haystack.split(needle).length-1};
@@ -86,7 +86,7 @@ var fn_fade = function($r) {
 		$msg = $r.find('.cmt_sub_content').css('display', 'block');				
 		var msg = $msg.clone();
 		msg.find('.quote').remove();
-		msg.find('img:not([src^=/img/])').after('[图]').remove();
+		msg.find('img:not([src^="/img/"])').after('[图]').remove();
 		var title = msg.text();
 		if(title.length > 20) title = "(共"+title.length+"字)"+title.substr(0, 10)+"...";
 		
@@ -117,7 +117,7 @@ var fn_fade = function($r) {
 	} else {//outer reply
 		var msg = $msg.clone();
 		msg.find('.quote').remove();
-		msg.find('img:not([src^=/img/])').after('[图]').remove();
+		msg.find('img:not([src^="/img/"])').after('[图]').remove();
 		var title = msg.text().replace(/^\s*|\s*$/g,"");
 		if(title.length > 20) title = "(共"+title.length+"字)"+title.substr(0, 10)+"...";
 
