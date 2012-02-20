@@ -91,4 +91,21 @@ chrome.extension.sendRequest({
 			setTimeout(arguments.callee, 50);
 		}
 	});
+	
+			
+	if(S.hideRating && /^\/subject/.test(location.pathname)) setTimeout(function(){
+		if(document.readyState!='uninitialized' && $('body').html()) {
+			$('body').prepend('<style>.global_rating,#ChartWarpper{opacity:0.01}</style>');
+			$(function() {
+				var $r = $('.global_rating,#ChartWarpper');
+				$r.one('dblclick', function() {
+					$r.attr('title','').fadeTo('fast', 1);
+				}).attr('title', '双击显示');
+				if($('#rate-tip').html()) $r.dblclick();
+			});
+		} else {
+			setTimeout(arguments.callee, 50);
+		}		
+	})
+
 });

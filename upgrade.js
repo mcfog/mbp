@@ -105,5 +105,9 @@ checkVer(function(oldV, newV) {
 		S.csePos = "0"
 		S.verno = 21;
 	}
+	if(oldV<22) {
+		BG.util.deskPop('版本升级成功，增加了<a href="http://bgm.tv/group/topic/13905">评分前隐藏分数</a>，去看看吧');
+		S.verno = 22;
+	}
 });
 
