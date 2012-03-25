@@ -382,26 +382,6 @@
 				});
 				rtButton();
 			});
-			
-			//Inject
-			EXT.sendRequest({do:'evalBG',what:'function(){return $("#inject").attr("src")}'}, function(res)
-			{
-				if(location.href!=res) return;
-				EXT.onRequest.addListener(function (request, sender, sendResponse) {
-					if(request.do == 'injectAjax') {
-						var opt = $.extend({}, request.options, {
-							success:function() {
-								sendResponse({status:'success',args:Array.prototype.slice.call(arguments)});
-							},
-							error:function() {
-								sendResponse({status:'error',args:Array.prototype.slice.call(arguments)});
-							}
-						});
-						$.ajax(opt);
-					}
-				});
-
-			})
 
 			//cse search
 			$(function() {

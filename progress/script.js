@@ -150,18 +150,16 @@ $(function() {
 		retry.this = this;
 		
 		$this.removeClass('air-button');
-		EXT.sendRequest({
-			do:'injectAjax',
-			options:{
-				url:'/subject/ep/'+epid+'/status/watched?ajax=1',
-				type:'POST',
-				headers:{'Content-Type':'application/xml'}
-			}
-		}, function(res) {
-			if('success' == res.status) {
+		$.ajax({
+			url:S.domain+'/subject/ep/'+epid+'/status/watched?ajax=1',
+			type:'POST',
+			dataType:'json',
+			headers:{'Content-Type':'application/xml'}
+		}).success(function(res) {
+			if('ok' == res.status) {
 				PRG[id].ep[num].done = true;
 				PRG[id].count.done += 1;
-				console.log(PRG[id]);
+				
 				BG.cacheGet.reset(S.domain + '/');
 				BG.cacheGet(S.domain + '/', false, {force:true});
 				renderAll();
