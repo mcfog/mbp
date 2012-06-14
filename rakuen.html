@@ -6,21 +6,32 @@
 	<script type="text/javascript" src="common.js"></script>
 	<script type="text/javascript">		
 		$(function() {
-			$('body').html('Loading...');
+			$(document.body).html('Loading...');
 			$('head').append($('<base />').attr('href', S['domain']).attr('target', '_blank'));
 			BG.cacheGet(S['domain']+"/rakuen"+(location.search?"/"+location.search.substr(1):"")+"/topiclist",function(o) {
 				var $items = $(o).find('li.item_list');
 				if($items.size()==0) {
-					$('body').html('空气中空荡荡的，没有电波传来:(').width(400);
+					$(document.body).html('空气中空荡荡的，没有电波传来:(').width(400);
 				} else {
-					$('body').empty();
-					$items.each(function() {
-						var $item = $(this).clone();
-						$('body').append($('<div class="rakuen_item"></div>').html($item.html()));
+					var last = 20;
+					$(document.body).empty();
+					$(window).bind('scroll', function()
+					{
+						if(last >= $items.length) return $(window).unbind('scroll');
+						if($(document).height() - $(window).height() - $(window).scrollTop() < 50)
+						{
+							$items.slice(last, last+5).each(fnRenderItem);
+							last += 5;
+						}
 					});
+					var fnRenderItem = function() {
+						var $item = $(this).clone();
+						$(document.body).append($('<div class="rakuen_item"></div>').html($item.html()));
+					};
+					$items.slice(0, last).each(fnRenderItem);
 					$('a[target=_parent]').attr('target', '_blank');
 				}
-				if(parent && parent.frm_w) parent.frm_w($('body').width());
+				if(parent && parent.frm_w) parent.frm_w($(document.body).width());
 			});
 		});
 	</script>

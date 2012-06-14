@@ -109,5 +109,9 @@ checkVer(function(oldV, newV) {
 		BG.util.deskPop('版本升级成功，增加了<a href="http://bgm.tv/group/topic/13905">评分前隐藏分数</a>，去看看吧');
 		S.verno = 22;
 	}
+	if(oldV<23) {
+		S.removeItem('hideOnline');
+		S.verno = 23;
+	}
 });
 

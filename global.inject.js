@@ -148,18 +148,6 @@
 			 	});
 			})();
 			
-			//隐藏在线播放
-			if(ext_opt('hideOnline') && /\/ep\/\d+$/.test(location.pathname)) (function() {
-				var $online = $('#online');
-				if($online.size()==0) return;
-				$online.after($('<a class="chiiBtn"><span>在线观看</span></a>').one('click', function() {
-					$online.insertAfter(this).show();
-					$('style._hideOnline').remove();
-					$(this).remove();
-				}))
-				$online.remove();
-			})();
-			
 			//自定导航
 			if(ext_opt('betterNav')) $(function() {
 				$('style._betterNav').remove();
