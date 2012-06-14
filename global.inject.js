@@ -423,36 +423,37 @@
 					return BG.tmpl_cse_result;
 				}+''}, function(tpl)
 				{
-					$.attr(document.body, "data-tmpl_cse_search_result", tpl);
+					$('<script type="text/x-sjtp" id="tmpl_cse_search_result">').text(tpl).appendTo(document.body);
 					c_eval(function() {
 						var _inited = false, _hash = null;
 						window.mbp.cse = {
  							result: function(o) {
-								$('.columns:first').render($.attr(document.body, "data-tmpl_cse_search_result"), o.responseData);
+								$('#header').fadeTo(400,0.05).find('h1').html('<del>我是你爸，去卖火柴</del>');
+								$('.columns:first').render($("#tmpl_cse_search_result").html(), o.responseData);
 							},
 							tag: null,
-							search: function(q) {
+							search: function(q, start) {
 								if(!_inited) {
 									var $n = $('#nav');
-									$n.siblings().remove()
-									$n.after('<div class="columns">')
-										.after('<div id="header" style="opacity:0.05"><h1><del>我是你爸，去卖火柴</del></h1></div>')
+									$n.siblings(':not(#footer)').remove()
+									$n.after('<div class="columns clearit">')
+										.after('<div id="header"><h1>少女祈祷中...</h1></div>')
 										;
 									$(document.head).find('title').html('MBP CSE Search');
 									$('#search_text').val(q);
 									_inited=true;
 								};
 
-								hash = {q:q};
+								hash = {q:q, start:start||0};
 								if(window.mbp.cse.tag) {
 									q += ' more:'+window.mbp.cse.tag;
 									hash.tag=window.mbp.cse.tag;
 								}
 								location.hash = _hash = JSON.stringify(hash);
 
-								$('<script src="http://www.google.com/uds/GwebSearch?callback=mbp.cse.result&rsz=filtered_cse&hl=zh_CN&cx=008561732579436191137:pumvqkbpt6w&v=1.0&'+$.param({q:q,_:Date.now()})+'" />')
+								$('<script src="http://www.google.com/uds/GwebSearch?callback=mbp.cse.result&rsz=filtered_cse&hl=zh_CN&cx=008561732579436191137:pumvqkbpt6w&v=1.0&'+$.param({q:q,_:Date.now(), start:start||0})+'" />')
 									.appendTo(document.head).remove();
-								$('.columns:first').html('少女祈祷中…');
+								$('#header').fadeTo(400,1).find('h1').html('少女祈祷中...');
 							},
 							hashchange: function() {
 								var hash = window.location.hash.substr(1);
@@ -461,7 +462,7 @@
 									var o = JSON.parse(hash);
 									if(!o) return;
 									if(o.tag) window.mbp.cse.tag = o.tag;
-									if('string' == typeof o.q) window.mbp.cse.search(o.q);
+									if('string' == typeof o.q) window.mbp.cse.search(o.q, o.start);
 								}
 							},
 							switch_tag: function(tag) {

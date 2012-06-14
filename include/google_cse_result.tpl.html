@@ -28,7 +28,23 @@ var mkUrl = function(url) {
 	}
 </style>
 <div id="columnSubjectBrowserA" class="column cse_result"> 
-	<div class="clearit"> </div> 
+	<div id="multipage">
+		<div class="page_inner">
+			<<~
+			var page = cursor.currentPageIndex + 1;
+			page = !cursor.pages[page] ? cursor.pages[0] : cursor.pages[page];
+			>>
+			<a class="p" href="javascript:void(0)" onclick="mbp.cse.search($('#search_text').val(), <<:page.start>>)" title="下一页">→</a>
+			<<loop cursor.pages k page>>
+				<<if cursor.currentPageIndex == k>>
+					<strong class="p_cur"><<:page.label>></strong>
+				<<else>>
+					<a class="p" href="javascript:void(0)" onclick="mbp.cse.search($('#search_text').val(), <<:page.start>>)"><<:page.label>></a>
+				<</if>>
+			<</loop>>
+		</div>
+	</div>
+	
 	<ul id="browserItemList" class="browserFull">
 	<<loop results k res>>
 		<li class="item<<:k%2?' even':' odd'>> clearit">
@@ -50,6 +66,23 @@ var mkUrl = function(url) {
 		</li>
 	<</loop>>
 	</ul>
+	<div id="multipage">
+		<div class="page_inner">
+			<<~
+			var page = cursor.currentPageIndex + 1;
+			page = !cursor.pages[page] ? cursor.pages[0] : cursor.pages[page];
+			>>
+			<a class="p" href="javascript:void(0)" onclick="mbp.cse.search($('#search_text').val(), <<:page.start>>)" title="下一页">→</a>
+			<<loop cursor.pages k page>>
+				<<if cursor.currentPageIndex == k>>
+					<strong class="p_cur"><<:page.label>></strong>
+				<<else>>
+					<a class="p" href="javascript:void(0)" onclick="mbp.cse.search($('#search_text').val(), <<:page.start>>)"><<:page.label>></a>
+				<</if>>
+			<</loop>>
+		</div>
+	</div>
+
 </div>
 
 <</if>>
