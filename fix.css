@@ -6,6 +6,14 @@ div#menu ul li a.focus:hover span, div#menu ul li a.top:hover span, #nav_menu li
 /*人物介绍左侧引用来源破行*/
 ul#infobox li {word-break: break-all;}
 
+/*春菜点击穿越*/
+#robot {
+	pointer-events: none;
+}
+#robot_balloon {
+	pointer-events: auto;	
+}
+
 /*编辑器『颜色』按钮*/
 .markItUp .markItUpButton15 a {
 	background:url(/img/smiles/tv/95.gif) -1px -3px no-repeat;
