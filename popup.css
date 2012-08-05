@@ -55,3 +55,9 @@ strong {
 .fr{float:right}
 
 .hide{display:none}
+
+.avatarReSize32,.avatarSize32  {
+	width: 32px;
+	height: 32px;
+	background-size: 32px 32px;
+}
