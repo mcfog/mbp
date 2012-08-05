@@ -113,5 +113,8 @@ checkVer(function(oldV, newV) {
 		S.removeItem('hideOnline');
 		S.verno = 23;
 	}
+	if(oldV<24) {
+		window.open("http://bgm.tv/group/topic/17748");
+	}
 });
 
